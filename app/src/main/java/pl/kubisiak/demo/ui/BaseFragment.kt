@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import pl.kubisiak.demo.BR
+import pl.kubisiak.demo.MyApplication
 
 abstract class BaseFragment: Fragment() {
 
@@ -29,5 +30,11 @@ abstract class BaseFragment: Fragment() {
         binding.setVariable(BR.vm, viewModel)
         binding.executePendingBindings()
         return binding.root
+    }
+
+    open fun onBackPressed() = MyApplication.getInstance().navigator.goBack()
+
+    open fun generateTag(): String {
+        return javaClass.canonicalName!!
     }
 }

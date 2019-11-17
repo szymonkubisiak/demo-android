@@ -1,9 +1,7 @@
 package pl.kubisiak.demo.ui.main
 
-import android.widget.Toast
 import androidx.databinding.Bindable
 import pl.kubisiak.demo.BR
-import pl.kubisiak.demo.MyApplication
 import pl.kubisiak.demo.ui.BaseViewModel
 
 class MainViewModel : BaseViewModel() {
@@ -17,6 +15,6 @@ class MainViewModel : BaseViewModel() {
         }
 
     fun onTouchMeClicked() {
-        Toast.makeText(MyApplication.getInstance(), "bar!", Toast.LENGTH_SHORT).show()
+        navigator.goToListTest()
     }
 }
