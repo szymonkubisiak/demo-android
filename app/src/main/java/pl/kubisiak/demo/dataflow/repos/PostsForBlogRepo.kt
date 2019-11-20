@@ -1,6 +1,7 @@
 package pl.kubisiak.demo.dataflow.repos
 
 import com.tumblr.jumblr.JumblrClient
+import com.tumblr.jumblr.exceptions.JumblrException
 import com.tumblr.jumblr.types.*
 import org.koin.core.KoinComponent
 import org.koin.core.inject
@@ -13,16 +14,23 @@ class PostsForBlogRepo(val id: Blog.ID): BaseRepo<List<Post.ID>>(), KoinComponen
     private val group: RepoGroup by inject()
 
     override fun update() {
+        //TODO: abstract the Jumblr-related code away to remove dependency
         val client: JumblrClient by inject()
         Thread {
-            val blog = client.blogInfo(id._internal)
-            val posts = blog.posts()
+            lateinit var posts: List<com.tumblr.jumblr.types.Post>
+            try {
+                val blog = client.blogInfo(id._internal)
+                posts = blog.posts()
+            }
+            catch (x: JumblrException) {
+                return@Thread
+            }
 
             val retval = ArrayList<Post.ID>()
             postsLoop@ for(post in posts) {
                 val id = Post.ID(post.id)
                 val postModel = when (post) {
-                    is PhotoPost -> Post(id, post.caption, post.photos[0].sizes[0].url)
+                    is PhotoPost -> Post(id, post.caption, post.photos?.firstOrNull()?.sizes?.firstOrNull()?.url)
                     is TextPost -> Post(id, post.title + " " + post.body)
                     is AnswerPost -> Post(id, post.question + " " + post.answer)
                     is ChatPost -> Post(id, post.title + " " + post.body)
