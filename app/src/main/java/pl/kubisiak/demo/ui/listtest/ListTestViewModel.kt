@@ -3,7 +3,7 @@ package pl.kubisiak.demo.ui.listtest
 import androidx.databinding.Bindable
 import androidx.databinding.ObservableArrayList
 import androidx.databinding.ObservableList
-import pl.kubisiak.demo.BR
+import androidx.databinding.library.baseAdapters.BR
 import pl.kubisiak.demo.ui.BaseViewModel
 import pl.kubisiak.demo.ui.items.ImageItemViewModel
 import pl.kubisiak.demo.ui.items.SimpleItemViewModel

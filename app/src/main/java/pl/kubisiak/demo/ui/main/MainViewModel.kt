@@ -1,12 +1,13 @@
 package pl.kubisiak.demo.ui.main
 
 import androidx.databinding.Bindable
-import pl.kubisiak.demo.BR
+import androidx.databinding.library.baseAdapters.BR
+import pl.kubisiak.demo.dataflow.models.Blog
 import pl.kubisiak.demo.ui.BaseViewModel
 
 class MainViewModel : BaseViewModel() {
 
-    private var _title: String? = "Foo"
+    private var _title: String? = "seejohnrun"
     var title: String?
         @Bindable get() = _title
         @Bindable set(value) {
@@ -19,7 +20,7 @@ class MainViewModel : BaseViewModel() {
     }
 
     fun onPostsListClicked() {
-        navigator.goToPostsList()
+        navigator.goToPostsList(Blog.ID(title + ".tumblr.com"))
     }
 
 }

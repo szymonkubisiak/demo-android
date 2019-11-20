@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{vm.title}"
-            app:layout_constraintBottom_toBottomOf="parent"
+            tools:text="Lorem Ipsum"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -33,14 +33,36 @@
             android:layout_height="wrap_content"
             android:layout_margin="3dp"
             android:onClick="@{() -> vm.onTouchMeClicked()}"
-            android:text="touch me"
+            android:text="test"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/message"
             />
 
+        <EditText
+            android:id="@+id/editBlogHandle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="@={vm.title}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/touchMe"
+            app:layout_constraintEnd_toStartOf="@id/blogHandleSuffix"
+            />
+        <TextView
+            android:id="@+id/blogHandleSuffix"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:text=".tumblr.com"
+            app:layout_constraintBottom_toBottomOf="@id/editBlogHandle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/editBlogHandle"
+
+            />
+
         <Button
-            android:id="@+id/posts2"
+            android:id="@+id/posts"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="3dp"
@@ -48,10 +70,8 @@
             android:text="posts"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/touchMe"
+            app:layout_constraintTop_toBottomOf="@id/editBlogHandle"
             />
-
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

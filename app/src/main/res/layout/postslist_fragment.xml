@@ -17,17 +17,27 @@
         android:layout_height="match_parent"
         tools:context=".ui.main.MainFragment">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/testList"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:layout_width="0dp"
             android:layout_height="0dp"
-            bind:items="@{vm.list}"
-            bind:vertical="@{true}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            />
+            app:refreshing="@{vm.loading}"
+            app:onRefreshListener="@{() -> vm.forceRefresh()}"
+            >
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/testList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="#FFCC00"
+                android:dividerHeight="2dp"
+                bind:items="@{vm.list}"
+                bind:vertical="@{true}"
+                />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

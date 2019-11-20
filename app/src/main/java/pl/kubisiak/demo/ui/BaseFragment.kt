@@ -8,7 +8,7 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import pl.kubisiak.demo.BR
+import androidx.databinding.library.baseAdapters.BR
 import pl.kubisiak.demo.MyApplication
 
 abstract class BaseFragment: Fragment() {

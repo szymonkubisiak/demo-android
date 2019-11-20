@@ -1,5 +1,7 @@
 package pl.kubisiak.demo.ui
 
+import pl.kubisiak.demo.dataflow.models.*
+
 interface Navigator {
 
     /**
@@ -9,7 +11,7 @@ interface Navigator {
 
     fun goToFirstScreen()
     fun goToListTest()
-    fun goToPostsList()
+    fun goToPostsList(id: Blog.ID)
 
     fun debugToast(text: CharSequence, long: Boolean = true)
 }

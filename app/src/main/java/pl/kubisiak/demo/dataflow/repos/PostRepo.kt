@@ -5,6 +5,6 @@ import pl.kubisiak.demo.dataflow.models.Post
 
 class PostRepo(val id: Post.ID): BaseRepo<Post>() {
     override fun update() {
-        //tumblr client get post
+        //TODO tumblr client update post details
     }
 }
