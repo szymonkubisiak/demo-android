@@ -15,6 +15,7 @@ public class BindngAdapter {
         if(url != null) {
             Context context = view.getContext();
             Glide.with(context).load(url).into(view);
+            view.setVisibility(View.VISIBLE);
         } else {
             view.setVisibility(View.GONE);
         }
