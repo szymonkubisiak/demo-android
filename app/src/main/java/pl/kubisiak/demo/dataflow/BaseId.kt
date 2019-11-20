@@ -1,4 +1,4 @@
 package pl.kubisiak.demo.dataflow
 
-class BaseId {
+open class BaseId {
 }

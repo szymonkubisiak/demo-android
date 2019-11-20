@@ -6,6 +6,7 @@ import androidx.databinding.ObservableList
 import pl.kubisiak.demo.BR
 import pl.kubisiak.demo.ui.BaseViewModel
 import pl.kubisiak.demo.ui.items.ImageItemViewModel
+import pl.kubisiak.demo.ui.items.SimpleItemViewModel
 
 class ListTestViewModel : BaseViewModel() {
 
@@ -27,5 +28,3 @@ class ListTestViewModel : BaseViewModel() {
             notifyPropertyChanged(BR.list)
         }
 }
-
-class SimpleItemViewModel(@Bindable val text : String) : BaseViewModel()

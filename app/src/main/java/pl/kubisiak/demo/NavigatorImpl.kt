@@ -4,6 +4,7 @@ import android.widget.Toast
 import pl.kubisiak.demo.ui.Navigator
 import pl.kubisiak.demo.ui.listtest.ListTestFragment
 import pl.kubisiak.demo.ui.main.MainFragment
+import pl.kubisiak.demo.ui.postslist.PostsListFragment
 import java.lang.ref.WeakReference
 
 class NavigatorImpl : Navigator {
@@ -22,6 +23,10 @@ class NavigatorImpl : Navigator {
 
     override fun goToListTest() {
         getActivity()?.replaceFragment(ListTestFragment.newInstance())
+    }
+
+    override fun goToPostsList() {
+        getActivity()?.replaceFragment(PostsListFragment.newInstance())
     }
 
     override fun goToFirstScreen() {

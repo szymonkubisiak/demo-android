@@ -1,6 +1,10 @@
 package pl.kubisiak.demo
 
 import android.app.Application
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.startKoin
+import pl.kubisiak.demo.dataflow.reposModule
 
 class MyApplication: Application() {
 
@@ -9,6 +13,12 @@ class MyApplication: Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
+
+        startKoin{
+            androidLogger()
+            androidContext(this@MyApplication)
+            modules(reposModule)
+        }
     }
 
     companion object {

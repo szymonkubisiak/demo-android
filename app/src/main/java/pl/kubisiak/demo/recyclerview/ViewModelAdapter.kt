@@ -7,8 +7,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 import pl.kubisiak.demo.R
 import pl.kubisiak.demo.ui.BaseViewModel
-import pl.kubisiak.demo.ui.items.ImageItemViewModel
-import pl.kubisiak.demo.ui.listtest.SimpleItemViewModel
+import pl.kubisiak.demo.ui.items.*
 
 class ViewModelAdapter(private val items: List<BaseViewModel>) : RecyclerView.Adapter<ViewModelViewHolder>()  {
 
@@ -29,10 +28,12 @@ class ViewModelAdapter(private val items: List<BaseViewModel>) : RecyclerView.Ad
         return getLayoutIdForPosition(position)
     }
 
+    //TODO: move when somewhere accessible
     private fun getLayoutIdForPosition(position: Int): Int {
         return when (items[position]) {
             is ImageItemViewModel -> R.layout.item_image
             is SimpleItemViewModel -> R.layout.item_simpletest
+            is PostItemViewModel -> R.layout.item_post
             else -> -1
         }
     }

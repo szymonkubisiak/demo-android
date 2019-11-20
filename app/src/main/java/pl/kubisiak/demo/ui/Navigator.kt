@@ -9,6 +9,7 @@ interface Navigator {
 
     fun goToFirstScreen()
     fun goToListTest()
+    fun goToPostsList()
 
     fun debugToast(text: CharSequence, long: Boolean = true)
 }

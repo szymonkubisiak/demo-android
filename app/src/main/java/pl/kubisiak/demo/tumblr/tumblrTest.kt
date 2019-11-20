@@ -27,9 +27,11 @@ fun obfuscateString(input: String, realLen: Int?): String {
     }
 }
 
+fun newClient() = JumblrClient(obfuscateString(key, 50), obfuscateString(scr, 50))
+
 fun testTumblr() {
     Thread {
-        val client = JumblrClient(obfuscateString(key, 50), obfuscateString(scr, 50))
+        val client = newClient()
 
         val blog = client.blogInfo("seejohnrun.tumblr.com")
         var title = blog.title

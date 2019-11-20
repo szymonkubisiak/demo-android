@@ -17,4 +17,9 @@ class MainViewModel : BaseViewModel() {
     fun onTouchMeClicked() {
         navigator.goToListTest()
     }
+
+    fun onPostsListClicked() {
+        navigator.goToPostsList()
+    }
+
 }
