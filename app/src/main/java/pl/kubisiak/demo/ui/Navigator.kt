@@ -12,6 +12,7 @@ interface Navigator {
     fun goToFirstScreen()
     fun goToListTest()
     fun goToPostsList(id: Blog.ID)
+    fun goToPostDetail(id: Post.ID)
 
     fun debugToast(text: CharSequence, long: Boolean = true)
 }

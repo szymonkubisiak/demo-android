@@ -1,19 +1,22 @@
-package pl.kubisiak.demo.ui.items
+package pl.kubisiak.demo.ui.postdetail
+
 
 import android.text.Html
 import android.text.Spanned
 import androidx.databinding.Bindable
-import org.koin.core.inject
 import androidx.databinding.library.baseAdapters.BR
+import org.koin.core.inject
 import pl.kubisiak.demo.dataflow.RepoGroup
 import pl.kubisiak.demo.dataflow.models.Post
 import pl.kubisiak.demo.ui.BaseViewModel
+import pl.kubisiak.demo.ui.items.PostItemViewModel
 
-class PostItemViewModel (val id: Post.ID): BaseViewModel() {
+
+class PostDetailsViewModel(id: Post.ID): BaseViewModel() {
 
     private var _title: String? = null
     var title: String?
-    @Bindable get() = _title
+        @Bindable get() = _title
         set(value) {
             _title = value
             notifyPropertyChanged(BR.title)
@@ -25,10 +28,6 @@ class PostItemViewModel (val id: Post.ID): BaseViewModel() {
         return _title?.let { Html.fromHtml(it) }
     }
 
-    fun goToDetails() {
-        navigator.goToPostDetail(id)
-    }
-
     private var _imageurl: String? = null
     var imageurl: String?
         @Bindable get() = _imageurl
@@ -37,7 +36,7 @@ class PostItemViewModel (val id: Post.ID): BaseViewModel() {
             notifyPropertyChanged(BR.imageurl)
         }
 
-    private val group:RepoGroup by inject()
+    private val group: RepoGroup by inject()
 
     init {
         val repo = group.posts[id]

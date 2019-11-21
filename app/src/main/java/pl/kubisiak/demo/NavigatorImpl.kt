@@ -2,9 +2,11 @@ package pl.kubisiak.demo
 
 import android.widget.Toast
 import pl.kubisiak.demo.dataflow.models.Blog
+import pl.kubisiak.demo.dataflow.models.Post
 import pl.kubisiak.demo.ui.Navigator
 import pl.kubisiak.demo.ui.listtest.ListTestFragment
 import pl.kubisiak.demo.ui.main.MainFragment
+import pl.kubisiak.demo.ui.postdetail.PostDetailsFragment
 import pl.kubisiak.demo.ui.postslist.PostsListFragment
 import java.lang.ref.WeakReference
 
@@ -28,6 +30,10 @@ class NavigatorImpl : Navigator {
 
     override fun goToPostsList(id: Blog.ID) {
         getActivity()?.replaceFragment(PostsListFragment.newInstance(id))
+    }
+
+    override fun goToPostDetail(id: Post.ID) {
+        getActivity()?.replaceFragment(PostDetailsFragment.newInstance(id))
     }
 
     override fun goToFirstScreen() {
