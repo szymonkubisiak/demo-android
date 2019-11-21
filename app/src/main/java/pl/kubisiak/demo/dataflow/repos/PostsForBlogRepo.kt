@@ -9,6 +9,9 @@ import pl.kubisiak.demo.dataflow.BaseRepo
 import pl.kubisiak.demo.dataflow.RepoGroup
 import pl.kubisiak.demo.dataflow.models.Blog
 import pl.kubisiak.demo.dataflow.models.Post
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 class PostsForBlogRepo(val id: Blog.ID): BaseRepo<List<Post.ID>>(), KoinComponent {
     private val group: RepoGroup by inject()
@@ -19,8 +22,11 @@ class PostsForBlogRepo(val id: Blog.ID): BaseRepo<List<Post.ID>>(), KoinComponen
         Thread {
             lateinit var posts: List<com.tumblr.jumblr.types.Post>
             try {
+                val options = HashMap<String, Any?>()
+                options.put("reblog_info", "true")
+
                 val blog = client.blogInfo(id._internal)
-                posts = blog.posts()
+                posts = blog.posts(options)
             }
             catch (x: JumblrException) {
                 return@Thread
