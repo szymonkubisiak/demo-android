@@ -3,17 +3,16 @@ package pl.kubisiak.demo.dataflow
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
+import org.koin.core.KoinComponent
 
-abstract class BaseRepo<T> {
+abstract class BaseRepo<T> : KoinComponent {
 
     protected val observable: BehaviorSubject<T> = BehaviorSubject.create()
 
     fun source(): Observable<T> =
         observable
             .distinctUntilChanged()
-            //.doOnSubscribe { ensure() }
             .observeOn(AndroidSchedulers.mainThread())
 
     fun ensure(): Completable? {
