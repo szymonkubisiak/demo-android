@@ -23,19 +23,8 @@ class PostsListViewModel(val blogID: Blog.ID): BaseViewModel(), KoinComponent {
             notifyPropertyChanged(BR.list)
         }
 
-    private var _isLoading: Boolean = false
-    var isLoading: Boolean
-        @Bindable get() = _isLoading
-        @Bindable set(value) {
-            _isLoading = value
-            notifyPropertyChanged(BR.loading)
-        }
-
     fun forceRefresh() {
-        isLoading = true
-        disposer.add(postsForBlog.update().subscribe(
-            { isLoading = false },
-            { isLoading = false }))
+        subscribeLoader(postsForBlog.update())
     }
 
     private val group:RepoGroup by inject()
@@ -50,10 +39,7 @@ class PostsListViewModel(val blogID: Blog.ID): BaseViewModel(), KoinComponent {
                 }
             list = retval
         })
-        isLoading = true
-        disposer.add(postsForBlog.ensure()?.subscribe(
-            { isLoading = false },
-            { isLoading = false }))
+        subscribeLoader(postsForBlog.ensure())
     }
 }
 
