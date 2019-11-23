@@ -33,9 +33,7 @@ class PostsListViewModel(val blogID: Blog.ID): BaseViewModel(), KoinComponent {
 
     fun forceRefresh() {
         isLoading = true
-        //TODO: add monitoring of update() status
-        postsForBlog.update()
-        isLoading = false
+        disposer.add(postsForBlog.update().subscribe{isLoading = false})
     }
 
     private val group:RepoGroup by inject()

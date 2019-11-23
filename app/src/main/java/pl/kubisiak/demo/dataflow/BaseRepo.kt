@@ -1,5 +1,6 @@
 package pl.kubisiak.demo.dataflow
 
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -15,13 +16,14 @@ abstract class BaseRepo<T> {
             .doOnSubscribe { ensure() }
             .observeOn(AndroidSchedulers.mainThread())
 
-    fun ensure() {
+    fun ensure(): Completable? {
         if(observable.value == null) {
-            update()
+            return update()
         }
+        return null
     }
     //TODO: add a mechanism to indicate request in progress and skip overlapping update()'s
-    abstract fun update()
+    abstract fun update(): Completable
 
     fun postValue(newValue: T) {
         observable.onNext(newValue)
