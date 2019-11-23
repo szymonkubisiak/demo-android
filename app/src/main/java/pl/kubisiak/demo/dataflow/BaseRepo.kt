@@ -13,7 +13,7 @@ abstract class BaseRepo<T> {
     fun source(): Observable<T> =
         observable
             .distinctUntilChanged()
-            .doOnSubscribe { ensure() }
+            //.doOnSubscribe { ensure() }
             .observeOn(AndroidSchedulers.mainThread())
 
     fun ensure(): Completable? {

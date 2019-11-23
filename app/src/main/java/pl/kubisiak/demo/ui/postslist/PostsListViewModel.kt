@@ -33,16 +33,16 @@ class PostsListViewModel(val blogID: Blog.ID): BaseViewModel(), KoinComponent {
 
     fun forceRefresh() {
         isLoading = true
-        disposer.add(postsForBlog.update().subscribe{isLoading = false})
+        disposer.add(postsForBlog.update().subscribe(
+            { isLoading = false },
+            { isLoading = false }))
     }
 
     private val group:RepoGroup by inject()
     private val postsForBlog = group.blogs[blogID]
 
     init {
-        isLoading = true
         disposer.add(postsForBlog.source().subscribe {
-            isLoading = false
             val retval = ObservableArrayList<BaseViewModel>()
                 .apply {
                     for (onePostId in it)
@@ -50,6 +50,10 @@ class PostsListViewModel(val blogID: Blog.ID): BaseViewModel(), KoinComponent {
                 }
             list = retval
         })
+        isLoading = true
+        disposer.add(postsForBlog.ensure()?.subscribe(
+            { isLoading = false },
+            { isLoading = false }))
     }
 }
 
