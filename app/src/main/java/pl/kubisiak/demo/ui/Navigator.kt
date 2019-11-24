@@ -14,5 +14,6 @@ interface Navigator {
     fun goToPostsList(id: Blog.ID)
     fun goToPostDetail(id: Post.ID)
 
+    fun showMessage(text: String, title: String? = null)
     fun debugToast(text: CharSequence, long: Boolean = true)
 }

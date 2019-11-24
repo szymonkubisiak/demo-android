@@ -1,6 +1,7 @@
 package pl.kubisiak.demo
 
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import pl.kubisiak.demo.dataflow.models.Blog
 import pl.kubisiak.demo.dataflow.models.Post
 import pl.kubisiak.demo.ui.Navigator
@@ -44,6 +45,22 @@ class NavigatorImpl : Navigator {
         if(BuildConfig.DEBUG) {
             Toast
                 .makeText(MyApplication.getInstance(), text, if(long) Toast.LENGTH_LONG else Toast.LENGTH_SHORT)
+                .show()
+        }
+    }
+
+    override fun showMessage(text: String, title: String?) {
+        getActivity()?.also {
+            val alertDialog = AlertDialog.Builder(it) //set icon
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle(title)
+                .setMessage(text)
+                .setPositiveButton("OK") { _, _ ->
+
+                }
+//                .setNegativeButton("No") { _, _ ->
+//
+//                }
                 .show()
         }
     }
