@@ -3,6 +3,7 @@ package pl.kubisiak.demo.dataflow.repos
 import com.tumblr.jumblr.JumblrClient
 import com.tumblr.jumblr.types.*
 import io.reactivex.Completable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.CompletableSubject
 import org.koin.core.inject
@@ -13,7 +14,7 @@ import pl.kubisiak.demo.dataflow.models.Post
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-class PostsForBlogRepo(val id: Blog.ID): BaseRepo<List<Post.ID>>() {
+class PostsForBlogRepo(val id: Blog.ID) : BaseRepo<List<Post.ID>>() {
     private val group: RepoGroup by inject()
     private var ongoingUpdate: Completable? = null
 
@@ -32,6 +33,7 @@ class PostsForBlogRepo(val id: Blog.ID): BaseRepo<List<Post.ID>>() {
             Completable
                 .fromAction { executeUpdate() }
                 .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subject)
             return subject
         }
@@ -45,7 +47,7 @@ class PostsForBlogRepo(val id: Blog.ID): BaseRepo<List<Post.ID>>() {
         val options = HashMap<String, Any?>()
         options.put("reblog_info", "true")
 
-         val blog = client.blogInfo(id._internal)
+        val blog = client.blogInfo(id._internal)
         posts = blog.posts(options)
 
         val retval = ArrayList<Post.ID>()
