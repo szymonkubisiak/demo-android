@@ -41,7 +41,7 @@ open class BaseViewModel: Observable, ViewModel(), KoinComponent {
                     { ex ->
                         isLoading = false
                         //TODO: check the exception destination, displaying message is only one of them
-                        navigator.showMessage(ex.message ?: "nieznany", "Błąd")
+                        navigator.showMessage(ex.message ?: "unknown", "Error")
                     })
             )
         }
