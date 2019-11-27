@@ -57,11 +57,12 @@ class PostsForBlogRepo(val id: Blog.ID) : BaseRepo<List<Post.ID>>() {
                 is PhotoPost -> Post(
                     id,
                     post.caption,
+                    post.rebloggedFromName,
                     post.photos?.firstOrNull()?.sizes?.firstOrNull()?.url
                 )
-                is TextPost -> Post(id, post.title + " " + post.body)
-                is AnswerPost -> Post(id, post.question + " " + post.answer)
-                is ChatPost -> Post(id, post.title + " " + post.body)
+                is TextPost -> Post(id, post.title + " " + post.body, post.rebloggedFromName)
+                is AnswerPost -> Post(id, post.question + " " + post.answer, post.rebloggedFromName)
+                is ChatPost -> Post(id, post.title + " " + post.body, post.rebloggedFromName)
                 else -> continue@postsLoop
             }
             val postRepo = group.posts[id]

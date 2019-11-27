@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 import pl.kubisiak.demo.dataflow.BaseId
 
-data class Post (val id: ID, val text: String, val imageUrl: String? = null) {
+data class Post (val id: ID, val text: String, val rebloggedFrom: String?, val imageUrl: String? = null) {
     //TODO: constructor and _internal should be inaccessible to general audience
     @Parcelize
     class ID constructor(val _internal: Long): BaseId(), Parcelable {
