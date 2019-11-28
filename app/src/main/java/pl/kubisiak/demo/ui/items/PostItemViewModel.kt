@@ -37,6 +37,18 @@ class PostItemViewModel (val id: Post.ID): BaseViewModel() {
             notifyPropertyChanged(BR.imageurl)
         }
 
+    private var _isFavourite: Boolean = false
+    var favourite: Boolean
+        @Bindable get() = _isFavourite
+        set(value) {
+            _isFavourite = value
+            notifyPropertyChanged(BR.favourite)
+        }
+
+    fun makeFavourite(favourite: Boolean) {
+        group.favouritePosts.tmpChangeState(if(favourite) id else null)
+    }
+
     private val group:RepoGroup by inject()
 
     init {
@@ -44,6 +56,10 @@ class PostItemViewModel (val id: Post.ID): BaseViewModel() {
         disposer.add( repo.source().subscribe {
             title = it.text
             imageurl = it.imageUrl
+        } )
+        val favRepo = group.favouritePosts
+        disposer.add( favRepo.source().subscribe {
+            favourite = id == it.favPostid
         } )
     }
 }

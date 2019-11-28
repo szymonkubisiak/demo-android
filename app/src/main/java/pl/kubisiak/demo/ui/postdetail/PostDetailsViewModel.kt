@@ -12,7 +12,7 @@ import pl.kubisiak.demo.dataflow.models.Post
 import pl.kubisiak.demo.ui.BaseViewModel
 
 
-class PostDetailsViewModel(id: Post.ID): BaseViewModel() {
+class PostDetailsViewModel(val id: Post.ID): BaseViewModel() {
 
     private var _title: String? = null
     var title: String?
@@ -42,6 +42,18 @@ class PostDetailsViewModel(id: Post.ID): BaseViewModel() {
         }
     }
 
+    private var _isFavourite: Boolean = false
+    var favourite: Boolean
+        @Bindable get() = _isFavourite
+        set(value) {
+            _isFavourite = value
+            notifyPropertyChanged(BR.favourite)
+        }
+
+    fun makeFavourite(favourite: Boolean) {
+        group.favouritePosts.tmpChangeState(if(favourite) id else null)
+    }
+
     private val group: RepoGroup by inject()
     private val repo = group.posts[id]
 
@@ -49,6 +61,10 @@ class PostDetailsViewModel(id: Post.ID): BaseViewModel() {
         disposer.add( repo.source().subscribe {
             model = it
             title = it.text
+        } )
+        val favRepo = group.favouritePosts
+        disposer.add( favRepo.source().subscribe {
+            favourite = id == it.favPostid
         } )
     }
 }

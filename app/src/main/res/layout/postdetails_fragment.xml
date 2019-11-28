@@ -51,9 +51,26 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
                 android:visibility="@{ (vm.model.rebloggedFrom == null) ? View.GONE : View.VISIBLE}"
                 android:text='@{"Reblogged from: "+ vm.model.rebloggedFrom}'
                 android:onClick="@{() -> vm.goToSourceBlog()}"
+                />
+            <Button
+                android:textSize="32dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="@{ vm.favourite ? View.GONE : View.VISIBLE}"
+                android:text="☆"
+                android:onClick="@{() -> vm.makeFavourite(true)}"
+                />
+            <Button
+                android:textSize="32dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="@{ !vm.favourite ? View.GONE : View.VISIBLE}"
+                android:text= "★"
+                android:onClick="@{() -> vm.makeFavourite(false)}"
                 />
         </LinearLayout>
     </ScrollView>
