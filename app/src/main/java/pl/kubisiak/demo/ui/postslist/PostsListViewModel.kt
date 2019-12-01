@@ -1,14 +1,13 @@
 package pl.kubisiak.demo.ui.postslist
 
 import androidx.databinding.Bindable
-import androidx.databinding.Observable
 import androidx.databinding.ObservableArrayList
 import androidx.databinding.ObservableList
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import androidx.databinding.library.baseAdapters.BR
-import pl.kubisiak.demo.dataflow.RepoGroup
-import pl.kubisiak.demo.dataflow.models.Blog
+import pl.kubisiak.dataflow.RepoGroup
+import pl.kubisiak.dataflow.models.Blog
 import pl.kubisiak.demo.ui.BaseViewModel
 import pl.kubisiak.demo.ui.items.PostItemViewModel
 

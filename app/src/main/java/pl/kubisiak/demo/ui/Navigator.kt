@@ -1,6 +1,6 @@
 package pl.kubisiak.demo.ui
 
-import pl.kubisiak.demo.dataflow.models.*
+import pl.kubisiak.dataflow.models.*
 
 interface Navigator {
 

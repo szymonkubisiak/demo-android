@@ -1,7 +1,7 @@
-package pl.kubisiak.demo.dataflow
+package pl.kubisiak.dataflow
 
-import pl.kubisiak.demo.dataflow.models.*
-import pl.kubisiak.demo.dataflow.repos.*
+import pl.kubisiak.dataflow.models.*
+import pl.kubisiak.dataflow.repos.*
 
 class RepoGroup {
     val posts = DistinctFactory<Post.ID, PostRepo> { PostRepo(it) }

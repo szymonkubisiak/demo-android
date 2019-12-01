@@ -6,9 +6,9 @@ import android.text.Spanned
 import androidx.databinding.Bindable
 import androidx.databinding.library.baseAdapters.BR
 import org.koin.core.inject
-import pl.kubisiak.demo.dataflow.RepoGroup
-import pl.kubisiak.demo.dataflow.models.Blog
-import pl.kubisiak.demo.dataflow.models.Post
+import pl.kubisiak.dataflow.RepoGroup
+import pl.kubisiak.dataflow.models.Blog
+import pl.kubisiak.dataflow.models.Post
 import pl.kubisiak.demo.ui.BaseViewModel
 
 

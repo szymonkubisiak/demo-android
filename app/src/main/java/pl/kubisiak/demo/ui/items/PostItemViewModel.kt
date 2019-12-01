@@ -5,8 +5,8 @@ import android.text.Spanned
 import androidx.databinding.Bindable
 import org.koin.core.inject
 import androidx.databinding.library.baseAdapters.BR
-import pl.kubisiak.demo.dataflow.RepoGroup
-import pl.kubisiak.demo.dataflow.models.Post
+import pl.kubisiak.dataflow.RepoGroup
+import pl.kubisiak.dataflow.models.Post
 import pl.kubisiak.demo.ui.BaseViewModel
 
 class PostItemViewModel (val id: Post.ID): BaseViewModel() {

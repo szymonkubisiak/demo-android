@@ -1,8 +1,8 @@
-package pl.kubisiak.demo.dataflow.repos
+package pl.kubisiak.dataflow.repos
 
 import io.reactivex.Completable
-import pl.kubisiak.demo.dataflow.BaseRepo
-import pl.kubisiak.demo.dataflow.models.Post
+import pl.kubisiak.dataflow.BaseRepo
+import pl.kubisiak.dataflow.models.Post
 
 class PostRepo(val id: Post.ID): BaseRepo<Post>() {
     override fun update(): Completable {

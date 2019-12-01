@@ -1,3 +1,3 @@
-package pl.kubisiak.demo.dataflow.models
+package pl.kubisiak.dataflow.models
 
 data class FavouritePosts(val favPostid: Post.ID?)

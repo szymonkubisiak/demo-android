@@ -1,10 +1,9 @@
-package pl.kubisiak.demo.dataflow.repos
+package pl.kubisiak.dataflow.repos
 
 import io.reactivex.Completable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import pl.kubisiak.demo.dataflow.BaseRepo
-import pl.kubisiak.demo.dataflow.models.FavouritePosts
-import pl.kubisiak.demo.dataflow.models.Post
+import pl.kubisiak.dataflow.BaseRepo
+import pl.kubisiak.dataflow.models.FavouritePosts
+import pl.kubisiak.dataflow.models.Post
 import java.util.concurrent.TimeUnit
 
 class FavouritePostsRepo: BaseRepo<FavouritePosts>() {
@@ -15,7 +14,7 @@ class FavouritePostsRepo: BaseRepo<FavouritePosts>() {
     fun tmpChangeState(newFavID: Post.ID?) {
         Completable
             .timer(2, TimeUnit.SECONDS)
-            .observeOn(AndroidSchedulers.mainThread())
+            //.observeOn(AndroidSchedulers.mainThread())
             .subscribe{ postValue(FavouritePosts(newFavID))}
     }
 }
