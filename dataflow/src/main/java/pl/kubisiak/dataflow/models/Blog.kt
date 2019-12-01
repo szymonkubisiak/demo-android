@@ -5,7 +5,7 @@ import java.io.Serializable
 
 data class Blog(val id: ID, val name: String) {
     //TODO: constructor and _internal should be inaccessible to general audience
-    class ID constructor(val _internal: String): BaseId(), Serializable {
+    class ID constructor(private val _internal: String): BaseId(), Serializable {
         override fun equals(other: Any?): Boolean {
             return if (other is ID) {
                 _internal == other._internal
@@ -17,5 +17,10 @@ data class Blog(val id: ID, val name: String) {
             return _internal.hashCode()
         }
 
+        override fun toString(): String {
+            return "Blog ID: $_internal"
+        }
+
+        internal fun rawValue() = _internal
     }
 }

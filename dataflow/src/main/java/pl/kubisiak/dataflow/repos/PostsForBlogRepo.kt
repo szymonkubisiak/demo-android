@@ -44,7 +44,7 @@ internal class PostsForBlogRepo(private val group: RepoGroup, val id: Blog.ID) :
         val options = HashMap<String, Any?>()
         options.put("reblog_info", "true")
 
-        val blog = client.blogInfo(id._internal)
+        val blog = client.blogInfo(id.rawValue())
         posts = blog.posts(options)
 
         val retval = ArrayList<Post.ID>()
