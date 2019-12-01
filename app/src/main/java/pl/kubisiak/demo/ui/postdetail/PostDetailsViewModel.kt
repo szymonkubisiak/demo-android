@@ -58,13 +58,13 @@ class PostDetailsViewModel(val id: Post.ID): BaseViewModel() {
     private val repo = group.getPost(id)
 
     init {
-        disposer.add( repo.source().subscribe {
+        disposer.add(repo.source().subscribe {
             model = it
             title = it.text
-        } )
+        })
         val favRepo = group.getFavouritePosts()
-        disposer.add( favRepo.source().subscribe {
+        disposer.add(favRepo.source().subscribe {
             favourite = id == it.favPostid
-        } )
+        })
     }
 }
