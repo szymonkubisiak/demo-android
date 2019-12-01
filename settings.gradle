@@ -1,2 +1,2 @@
-include ':app'
+include ':app', ':dataflow'
 rootProject.name='demo'
