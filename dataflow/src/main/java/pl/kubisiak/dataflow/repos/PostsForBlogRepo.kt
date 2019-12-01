@@ -5,7 +5,6 @@ import com.tumblr.jumblr.types.*
 import io.reactivex.Completable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.CompletableSubject
-import org.koin.core.inject
 import pl.kubisiak.dataflow.BaseRepo
 import pl.kubisiak.dataflow.RepoGroup
 import pl.kubisiak.dataflow.models.Blog
@@ -13,8 +12,7 @@ import pl.kubisiak.dataflow.models.Post
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-class PostsForBlogRepo(val id: Blog.ID) : BaseRepo<List<Post.ID>>() {
-    private val group: RepoGroup by inject()
+internal class PostsForBlogRepo(private val group: RepoGroup, val id: Blog.ID) : BaseRepo<List<Post.ID>>() {
     private var ongoingUpdate: Completable? = null
 
     override fun update(): Completable {
@@ -40,7 +38,7 @@ class PostsForBlogRepo(val id: Blog.ID) : BaseRepo<List<Post.ID>>() {
 
     private fun executeUpdate() {
         //TODO: abstract the Jumblr-related code away to remove dependency
-        val client: JumblrClient by inject()
+        val client = group.client
         lateinit var posts: List<com.tumblr.jumblr.types.Post>
 
         val options = HashMap<String, Any?>()

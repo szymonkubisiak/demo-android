@@ -3,9 +3,8 @@ package pl.kubisiak.dataflow
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
-import org.koin.core.KoinComponent
 
-abstract class BaseRepo<T> : Repo<T>, KoinComponent {
+abstract class BaseRepo<T> : Repo<T> {
 
     protected val observable: BehaviorSubject<T> = BehaviorSubject.create()
 
