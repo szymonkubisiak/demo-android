@@ -1,4 +1,4 @@
-package pl.kubisiak.demo.dataflow
+package pl.kubisiak.demo.koinmodule
 
 import org.koin.dsl.module
 import pl.kubisiak.dataflow.createSession
