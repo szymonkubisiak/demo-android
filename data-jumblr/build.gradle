@@ -5,7 +5,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
-    implementation project(':dataflow')
+    implementation project(':domain')
     implementation group: 'com.tumblr', name: 'jumblr', version: '0.0.13'
 }
 

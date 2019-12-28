@@ -1,2 +1,2 @@
-include ':app', ':dataflow', ':data-jumblr'
+include ':app', ':domain', ':data-jumblr'
 rootProject.name='demo'
