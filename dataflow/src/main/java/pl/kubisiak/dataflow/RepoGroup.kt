@@ -1,6 +1,5 @@
 package pl.kubisiak.dataflow
 
-import com.tumblr.jumblr.JumblrClient
 import pl.kubisiak.dataflow.models.*
 import pl.kubisiak.dataflow.repos.*
 
@@ -11,10 +10,10 @@ interface Session {
     fun markPostAsFavourite(id: Post.ID?)
 }
 
-internal class RepoGroup(val client: JumblrClient): Session {
-    val posts = DistinctFactory<Post.ID, PostRepo> { PostRepo(this, it) }
-    val blogs = DistinctFactory<Blog.ID, PostsForBlogRepo> { PostsForBlogRepo(this, it) }
-    val favouritePosts = FavouritePostsRepo(this)
+internal class RepoGroup(val client: BlogClient) : Session {
+    internal val posts = DistinctFactory<Post.ID, PostRepo> { PostRepo(this, it) }
+    internal val blogs = DistinctFactory<Blog.ID, PostsForBlogRepo> { PostsForBlogRepo(this, it) }
+    internal val favouritePosts = FavouritePostsRepo(this)
 
     override fun getPost(id: Post.ID): Repo<Post> = posts[id]
     override fun getBlogPosts(id: Blog.ID): Repo<List<Post.ID>> = blogs[id]
@@ -22,4 +21,8 @@ internal class RepoGroup(val client: JumblrClient): Session {
     override fun markPostAsFavourite(id: Post.ID?) = favouritePosts.tmpChangeState(id)
 }
 
-fun createSession(client: JumblrClient): Session = RepoGroup(client)
+fun createSession(client: BlogClient): Session = RepoGroup(client)
+
+interface BlogClient {
+    fun getPostsForBlogSync(id: Blog.ID): List<Post>
+}

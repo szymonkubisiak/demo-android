@@ -1,7 +1,8 @@
 package pl.kubisiak.demo.tumblr
 
 import android.util.Base64
-import com.tumblr.jumblr.JumblrClient
+import pl.kubisiak.data.jumblr.JumblrWrapper
+
 import kotlin.experimental.xor
 
 val key = "2Vk28MvG9XiyX4h3fUHp7WwEuik5ukLBA+RLA0UmE6kfnCg2DBZp2Uexe7ws"
@@ -27,15 +28,4 @@ fun obfuscateString(input: String, realLen: Int?): String {
     }
 }
 
-fun newClient() = JumblrClient(obfuscateString(key, 50), obfuscateString(scr, 50))
-
-fun testTumblr() {
-    Thread {
-        val client = newClient()
-
-        val blog = client.blogInfo("seejohnrun.tumblr.com")
-        var title = blog.title
-        var posts = blog.posts()
-
-    }.start()
-}
+fun newClient() = JumblrWrapper(obfuscateString(key, 50), obfuscateString(scr, 50))

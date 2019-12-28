@@ -21,6 +21,6 @@ data class Blog(val id: ID, val name: String) {
             return "Blog ID: $_internal"
         }
 
-        internal fun rawValue() = _internal
+        fun rawValue() = _internal
     }
 }
