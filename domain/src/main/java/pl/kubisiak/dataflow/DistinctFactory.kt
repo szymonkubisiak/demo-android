@@ -1,4 +1,4 @@
-package pl.kubisiak.demo.dataflow
+package pl.kubisiak.dataflow
 
 import java.util.*
 

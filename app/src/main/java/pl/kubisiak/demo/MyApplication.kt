@@ -4,7 +4,7 @@ import android.app.Application
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
-import pl.kubisiak.demo.dataflow.reposModule
+import pl.kubisiak.demo.koinmodule.reposModule
 
 class MyApplication: Application() {
 

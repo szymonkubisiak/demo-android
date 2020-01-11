@@ -5,8 +5,8 @@ import android.text.Spanned
 import androidx.databinding.Bindable
 import org.koin.core.inject
 import androidx.databinding.library.baseAdapters.BR
-import pl.kubisiak.demo.dataflow.RepoGroup
-import pl.kubisiak.demo.dataflow.models.Post
+import pl.kubisiak.dataflow.Session
+import pl.kubisiak.dataflow.models.Post
 import pl.kubisiak.demo.ui.BaseViewModel
 
 class PostItemViewModel (val id: Post.ID): BaseViewModel() {
@@ -46,18 +46,18 @@ class PostItemViewModel (val id: Post.ID): BaseViewModel() {
         }
 
     fun makeFavourite(favourite: Boolean) {
-        group.favouritePosts.tmpChangeState(if(favourite) id else null)
+        group.markPostAsFavourite(if(favourite) id else null)
     }
 
-    private val group:RepoGroup by inject()
+    private val group:Session by inject()
 
     init {
-        val repo = group.posts[id]
+        val repo = group.getPost(id)
         disposer.add( repo.source().subscribe {
             title = it.text
             imageurl = it.imageUrl
         } )
-        val favRepo = group.favouritePosts
+        val favRepo = group.getFavouritePosts()
         disposer.add( favRepo.source().subscribe {
             favourite = id == it.favPostid
         } )

@@ -2,7 +2,7 @@ package pl.kubisiak.demo.ui.main
 
 import androidx.databinding.Bindable
 import androidx.databinding.library.baseAdapters.BR
-import pl.kubisiak.demo.dataflow.models.Blog
+import pl.kubisiak.dataflow.models.Blog
 import pl.kubisiak.demo.ui.BaseViewModel
 
 class MainViewModel : BaseViewModel() {

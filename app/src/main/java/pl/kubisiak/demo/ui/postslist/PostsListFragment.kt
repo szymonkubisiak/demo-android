@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import pl.kubisiak.demo.R
-import pl.kubisiak.demo.dataflow.models.Blog
+import pl.kubisiak.dataflow.models.Blog
 import pl.kubisiak.demo.ui.BaseFragment
 
 private const val BLOG_ID = "blogidparam"
@@ -19,7 +19,7 @@ class PostsListFragment : BaseFragment() {
 
     override fun createViewModel() =
         ViewModelProviders
-            .of(this, Factory(arguments?.getParcelable(BLOG_ID)!!))
+            .of(this, Factory(arguments?.getSerializable(BLOG_ID) as Blog.ID))
             .get(PostsListViewModel::class.java)
 
     override fun getLayoutRes() =
@@ -28,7 +28,7 @@ class PostsListFragment : BaseFragment() {
     companion object {
         fun newInstance(id: Blog.ID) = PostsListFragment().apply {
             arguments = Bundle().apply {
-                putParcelable(BLOG_ID, id)
+                putSerializable(BLOG_ID, id)
             }
         }
     }
