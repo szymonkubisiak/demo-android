@@ -1,5 +1,7 @@
 package pl.kubisiak.dataflow
 
+import io.reactivex.Observable
+import io.reactivex.Scheduler
 import pl.kubisiak.dataflow.models.*
 import pl.kubisiak.dataflow.repos.*
 
@@ -23,6 +25,8 @@ internal class RepoGroup(val client: BlogClient) : Session {
 
 fun createSession(client: BlogClient): Session = RepoGroup(client)
 
+var returnScheduler: Scheduler? = null
+
 interface BlogClient {
-    fun getPostsForBlogSync(id: Blog.ID): List<Post>
+    fun getPostsForBlog(id: Blog.ID): Observable<List<Post>>
 }
