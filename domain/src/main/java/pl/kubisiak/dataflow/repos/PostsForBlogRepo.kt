@@ -3,13 +3,14 @@ package pl.kubisiak.dataflow.repos
 import io.reactivex.Completable
 import io.reactivex.subjects.CompletableSubject
 import pl.kubisiak.dataflow.BaseRepo
+import pl.kubisiak.dataflow.Identifiable
 import pl.kubisiak.dataflow.RepoGroup
 import pl.kubisiak.dataflow.models.Blog
 import pl.kubisiak.dataflow.models.Post
 import pl.kubisiak.dataflow.returnScheduler
 import kotlin.collections.ArrayList
 
-internal class PostsForBlogRepo(private val group: RepoGroup, val id: Blog.ID) : BaseRepo<List<Post.ID>>() {
+internal class PostsForBlogRepo(private val group: RepoGroup, override val id: Blog.ID): Identifiable<Blog.ID>, BaseRepo<List<Post.ID>>() {
     private var ongoingUpdate: Completable? = null
 
     override fun update(): Completable {

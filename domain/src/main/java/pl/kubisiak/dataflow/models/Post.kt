@@ -1,19 +1,13 @@
 package pl.kubisiak.dataflow.models
 
 import pl.kubisiak.dataflow.BaseId
+import pl.kubisiak.dataflow.Identifiable
 import java.io.Serializable
 
-data class Post (val id: ID, val text: String, val rebloggedFrom: String?, val imageUrl: String? = null) {
-    class ID constructor(private val _internal: Long): BaseId(), Serializable {
-        override fun equals(other: Any?): Boolean {
-            return if (other is ID) {
-                _internal == other._internal
-            } else {
-                _internal == other
-            }
-        }
-
-        internal fun rawValue() = _internal
+data class Post (override val id: ID, val text: String, val rebloggedFrom: String?, val imageUrl: String? = null) : Identifiable<Post.ID> {
+    class ID private constructor(private val _internal: Long): BaseId(), Serializable {
+        override fun equals(other: Any?): Boolean =
+            other is ID && this.javaClass == other.javaClass && this._internal == other._internal
 
         override fun hashCode(): Int {
             return _internal.toInt()
@@ -21,6 +15,12 @@ data class Post (val id: ID, val text: String, val rebloggedFrom: String?, val i
 
         override fun toString(): String {
             return "Post ID: $_internal"
+        }
+
+        companion object {
+            fun create(value: Long): ID {
+                return ID(value)
+            }
         }
     }
 }

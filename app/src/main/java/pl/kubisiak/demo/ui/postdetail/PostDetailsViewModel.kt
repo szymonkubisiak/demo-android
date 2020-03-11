@@ -38,7 +38,7 @@ class PostDetailsViewModel(val id: Post.ID): BaseViewModel() {
 
     fun goToSourceBlog() {
         model?.rebloggedFrom?.also {
-            navigator.goToPostsList(Blog.ID("$it.tumblr.com"))
+            navigator.goToPostsList(Blog.ID.create("$it.tumblr.com"))
         }
     }
 

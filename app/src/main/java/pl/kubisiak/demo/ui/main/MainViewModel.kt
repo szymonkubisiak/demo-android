@@ -20,7 +20,7 @@ class MainViewModel : BaseViewModel() {
     }
 
     fun onPostsListClicked() {
-        navigator.goToPostsList(Blog.ID(title + ".tumblr.com"))
+        navigator.goToPostsList(Blog.ID.create(title + ".tumblr.com"))
     }
 
 }
