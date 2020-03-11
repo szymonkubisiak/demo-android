@@ -25,7 +25,7 @@ internal class PostsForBlogRepo(private val group: RepoGroup, override val id: B
                 { synchronized(this) { ongoingUpdate = null } },
                 { synchronized(this) { ongoingUpdate = null } })
             
-            group.client.getPostsForBlog(id)
+            group.client.getPostsForBlog(id, null, null)
                 .observeOn(returnScheduler)
                 .doOnNext(::processIncoming)
                 .ignoreElements()

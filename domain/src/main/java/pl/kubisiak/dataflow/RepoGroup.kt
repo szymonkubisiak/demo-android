@@ -28,5 +28,5 @@ fun createSession(client: BlogClient): Session = RepoGroup(client)
 var returnScheduler: Scheduler? = null
 
 interface BlogClient {
-    fun getPostsForBlog(id: Blog.ID): Observable<List<Post>>
+    fun getPostsForBlog(id: Blog.ID, offset: Int?, limit: Int?): Observable<List<Post>>
 }

@@ -17,16 +17,19 @@ class JumblrWrapper(consumerKey: String, consumerSecret: String) : BlogClient {
 
     private val client = JumblrClient(consumerKey, consumerSecret)
 
-    fun getPostsForBlogSync(blogid: Blog.ID): List<Post> {
+    private fun getPostsForBlogSync(blogid: Blog.ID, offset: Int?, limit: Int?): List<Post> {
         val options = HashMap<String, Any?>()
         options["reblog_info"] = "true"
+
+        limit?.also { options["limit"] = it }
+        offset?.also { options["offset"] = it }
 
         val blog = client.blogInfo(blogid.rawValue())
         val posts: List<com.tumblr.jumblr.types.Post> = blog.posts(options)
 
         val retval = ArrayList<Post>()
         postsLoop@ for (post in posts) {
-            val id = Post.ID(post.id)
+            val id = Post.ID.create(post.id)
             val postModel = when (post) {
                 is PhotoPost -> Post(
                     id,
@@ -44,9 +47,9 @@ class JumblrWrapper(consumerKey: String, consumerSecret: String) : BlogClient {
         return(retval)
     }
 
-    override fun getPostsForBlog(id: Blog.ID): Observable<List<Post>> {
+    override fun getPostsForBlog(id: Blog.ID, offset: Int?, limit: Int?): Observable<List<Post>> {
         return Observable
-            .fromCallable { getPostsForBlogSync(id) }
+            .fromCallable { getPostsForBlogSync(id, offset, limit) }
             .subscribeOn(Schedulers.io())
     }
 }
