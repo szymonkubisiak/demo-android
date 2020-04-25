@@ -29,4 +29,5 @@ var returnScheduler: Scheduler? = null
 
 interface BlogClient {
     fun getPostsForBlog(id: Blog.ID, offset: Int?, limit: Int?): Observable<List<Post>>
+    fun getPost(id: Post.ID): Observable<Post>
 }

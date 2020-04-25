@@ -29,7 +29,42 @@ class JumblrWrapper(consumerKey: String, consumerSecret: String) : BlogClient {
 
         val retval = ArrayList<Post>()
         postsLoop@ for (post in posts) {
-            val id = Post.ID.create(post.id)
+            val id = Post.ID.create(post.id, blogid)
+            try {
+                val postModel = mapper_post(post, id)
+                retval.add(postModel)
+            } catch (x: Exception) {
+                continue@postsLoop
+            }
+        }
+        return(retval)
+    }
+
+    override fun getPostsForBlog(id: Blog.ID, offset: Int?, limit: Int?): Observable<List<Post>> {
+        return Observable
+            .fromCallable { getPostsForBlogSync(id, offset, limit) }
+            .subscribeOn(Schedulers.io())
+    }
+
+    private fun getPostSync(id: Post.ID): Post {
+        val blogid = id.owner
+        val blog = client.blogInfo(blogid.rawValue())
+        val post: com.tumblr.jumblr.types.Post = blog.getPost(id.rawValue())
+        val postModel = mapper_post(post, id)
+        return(postModel)
+    }
+
+    override fun getPost(id: Post.ID): Observable<Post> {
+        return Observable
+            .fromCallable { getPostSync(id) }
+            .subscribeOn(Schedulers.io())
+    }
+
+    companion object {
+        private fun mapper_post(
+            post: com.tumblr.jumblr.types.Post,
+            id: Post.ID
+        ): Post {
             val postModel = when (post) {
                 is PhotoPost -> Post(
                     id,
@@ -40,16 +75,9 @@ class JumblrWrapper(consumerKey: String, consumerSecret: String) : BlogClient {
                 is TextPost -> Post(id, post.title + " " + post.body, post.rebloggedFromName)
                 is AnswerPost -> Post(id, post.question + " " + post.answer, post.rebloggedFromName)
                 is ChatPost -> Post(id, post.title + " " + post.body, post.rebloggedFromName)
-                else -> continue@postsLoop
+                else -> throw Exception("unsupported post type")//continue@postsLoop
             }
-            retval.add(postModel)
+            return postModel
         }
-        return(retval)
-    }
-
-    override fun getPostsForBlog(id: Blog.ID, offset: Int?, limit: Int?): Observable<List<Post>> {
-        return Observable
-            .fromCallable { getPostsForBlogSync(id, offset, limit) }
-            .subscribeOn(Schedulers.io())
     }
 }
