@@ -1,16 +1,16 @@
-package pl.kubisiak.dataflow.repos
+package pl.kubisiak.dataflow.sources
 
 import io.reactivex.Completable
 import io.reactivex.subjects.CompletableSubject
-import pl.kubisiak.dataflow.BaseRepo
+import pl.kubisiak.dataflow.BaseSource
 import pl.kubisiak.dataflow.Identifiable
-import pl.kubisiak.dataflow.RepoGroup
+import pl.kubisiak.dataflow.SourceGroup
 import pl.kubisiak.dataflow.models.Blog
 import pl.kubisiak.dataflow.models.Post
 import pl.kubisiak.dataflow.returnScheduler
 import kotlin.collections.ArrayList
 
-internal class PostsForBlogRepo(private val group: RepoGroup, override val id: Blog.ID): Identifiable<Blog.ID>, BaseRepo<List<Post.ID>>() {
+internal class PostsForBlogSource(private val group: SourceGroup, override val id: Blog.ID): Identifiable<Blog.ID>, BaseSource<List<Post.ID>>() {
     private var ongoingUpdate: Completable? = null
 
     override fun update(): Completable {
@@ -39,8 +39,8 @@ internal class PostsForBlogRepo(private val group: RepoGroup, override val id: B
     private fun processIncoming(posts: List<Post>) {
         val retval = ArrayList<Post.ID>()
         for (postModel in posts) {
-            val postRepo = group.posts[postModel.id]
-            postRepo.postValue(postModel)
+            val postUC = group.posts[postModel.id]
+            postUC.postValue(postModel)
             retval.add(postModel.id)
         }
         postValue(retval)

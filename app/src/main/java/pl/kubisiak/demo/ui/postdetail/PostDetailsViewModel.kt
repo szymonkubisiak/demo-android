@@ -55,15 +55,15 @@ class PostDetailsViewModel(val id: Post.ID): BaseViewModel() {
     }
 
     private val group: Session by inject()
-    private val repo = group.getPost(id)
+    private val source = group.getPost(id)
 
     init {
-        disposer.add(repo.source().subscribe {
+        disposer.add(source.observable().subscribe {
             model = it
             title = it.text
         })
-        val favRepo = group.getFavouritePosts()
-        disposer.add(favRepo.source().subscribe {
+        val favSource = group.getFavouritePosts()
+        disposer.add(favSource.observable().subscribe {
             favourite = id == it.favPostid
         })
     }

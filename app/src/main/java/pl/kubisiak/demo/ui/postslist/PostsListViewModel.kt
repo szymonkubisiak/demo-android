@@ -30,7 +30,7 @@ class PostsListViewModel(val blogID: Blog.ID): BaseViewModel(), KoinComponent {
     private val postsForBlog = group.getBlogPosts(blogID)
 
     init {
-        disposer.add(postsForBlog.source().subscribe {
+        disposer.add(postsForBlog.observable().subscribe {
             val retval = ObservableArrayList<BaseViewModel>()
                 .apply {
                     for (onePostId in it)

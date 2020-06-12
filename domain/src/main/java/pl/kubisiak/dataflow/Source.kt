@@ -3,9 +3,9 @@ package pl.kubisiak.dataflow
 import io.reactivex.Completable
 import io.reactivex.Observable
 
-interface Repo<T> {
+interface Source<T> {
 
-    fun source(): Observable<T>
+    fun observable(): Observable<T>
     fun ensure(): Completable?
     fun update(): Completable
 

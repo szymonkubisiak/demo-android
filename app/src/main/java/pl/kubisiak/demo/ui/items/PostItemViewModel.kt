@@ -52,13 +52,13 @@ class PostItemViewModel (val id: Post.ID): BaseViewModel() {
     private val group:Session by inject()
 
     init {
-        val repo = group.getPost(id)
-        disposer.add( repo.source().subscribe {
+        val source = group.getPost(id)
+        disposer.add( source.observable().subscribe {
             title = it.text
             imageurl = it.imageUrl
         } )
-        val favRepo = group.getFavouritePosts()
-        disposer.add( favRepo.source().subscribe {
+        val favSource = group.getFavouritePosts()
+        disposer.add( favSource.observable().subscribe {
             favourite = id == it.favPostid
         } )
     }

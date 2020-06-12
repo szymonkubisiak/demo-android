@@ -1,13 +1,13 @@
-package pl.kubisiak.dataflow.repos
+package pl.kubisiak.dataflow.sources
 
 import io.reactivex.Completable
-import pl.kubisiak.dataflow.BaseRepo
-import pl.kubisiak.dataflow.RepoGroup
+import pl.kubisiak.dataflow.BaseSource
+import pl.kubisiak.dataflow.SourceGroup
 import pl.kubisiak.dataflow.models.FavouritePosts
 import pl.kubisiak.dataflow.models.Post
 import java.util.concurrent.TimeUnit
 
-internal class FavouritePostsRepo(private val group: RepoGroup): BaseRepo<FavouritePosts>() {
+internal class FavouritePostsSource(private val group: SourceGroup): BaseSource<FavouritePosts>() {
     override fun update(): Completable {
         return Completable.complete()
     }

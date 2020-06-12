@@ -4,6 +4,6 @@ import org.koin.dsl.module
 import pl.kubisiak.dataflow.createSession
 import pl.kubisiak.demo.tumblr.newClient
 
-val reposModule = module {
+val sessionModule = module {
     single { createSession(newClient()) }
 }

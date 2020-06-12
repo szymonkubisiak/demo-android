@@ -4,11 +4,11 @@ import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 
-abstract class BaseRepo<T> : Repo<T> {
+abstract class BaseSource<T> : Source<T> {
 
     protected val observable: BehaviorSubject<T> = BehaviorSubject.create()
 
-    override fun source(): Observable<T> =
+    override fun observable(): Observable<T> =
         observable
             .distinctUntilChanged()
             //.observeOn(AndroidSchedulers.mainThread())
