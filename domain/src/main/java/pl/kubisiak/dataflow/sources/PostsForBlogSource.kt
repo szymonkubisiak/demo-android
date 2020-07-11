@@ -2,16 +2,17 @@ package pl.kubisiak.dataflow.sources
 
 import io.reactivex.Completable
 import io.reactivex.subjects.CompletableSubject
-import pl.kubisiak.dataflow.BaseSource
-import pl.kubisiak.dataflow.Identifiable
-import pl.kubisiak.dataflow.SourceGroup
+import org.koin.core.get
+import org.koin.core.parameter.parametersOf
+import pl.kubisiak.dataflow.*
 import pl.kubisiak.dataflow.models.Blog
 import pl.kubisiak.dataflow.models.Post
-import pl.kubisiak.dataflow.returnScheduler
 import kotlin.collections.ArrayList
 
-internal class PostsForBlogSource(private val group: SourceGroup, override val id: Blog.ID): Identifiable<Blog.ID>, BaseSource<List<Post.ID>>() {
+class PostsForBlogSource(override val id: Blog.ID): Identifiable<Blog.ID>, BaseSource<List<Post.ID>>() {
     private var ongoingUpdate: Completable? = null
+
+    private val client: BlogClient = get()
 
     override fun update(): Completable {
         synchronized(this) {
@@ -25,8 +26,8 @@ internal class PostsForBlogSource(private val group: SourceGroup, override val i
                 { synchronized(this) { ongoingUpdate = null } },
                 { synchronized(this) { ongoingUpdate = null } })
             
-            group.client.getPostsForBlog(id, null, null)
-                .observeOn(returnScheduler)
+            client.getPostsForBlog(id, null, null)
+                .observeOn(get())
                 .doOnNext(::processIncoming)
                 .ignoreElements()
                 .subscribe(subject)
@@ -36,11 +37,11 @@ internal class PostsForBlogSource(private val group: SourceGroup, override val i
     }
 
     //take a blob of data from client and split it into appropriate buckets
-    private fun processIncoming(posts: List<Post>) {
+    internal fun processIncoming(posts: List<Post>) {
         val retval = ArrayList<Post.ID>()
         for (postModel in posts) {
-            val postUC = group.posts[postModel.id]
-            postUC.postValue(postModel)
+            val postUC: PostSource = get { parametersOf(postModel.id) }
+            postUC.processIncoming(postModel)
             retval.add(postModel.id)
         }
         postValue(retval)

@@ -2,14 +2,14 @@ package pl.kubisiak.dataflow.sources
 
 import io.reactivex.Completable
 import io.reactivex.subjects.CompletableSubject
-import pl.kubisiak.dataflow.BaseSource
-import pl.kubisiak.dataflow.Identifiable
-import pl.kubisiak.dataflow.SourceGroup
+import org.koin.core.get
+import pl.kubisiak.dataflow.*
 import pl.kubisiak.dataflow.models.Post
-import pl.kubisiak.dataflow.returnScheduler
 
-internal class PostSource(private val group: SourceGroup, override val id: Post.ID): Identifiable<Post.ID>, BaseSource<Post>() {
+class PostSource(override val id: Post.ID): Identifiable<Post.ID>, BaseSource<Post>() {
     private var ongoingUpdate: Completable? = null
+
+    private val client: BlogClient = get()
 
     override fun update(): Completable {
         synchronized(this) {
@@ -23,8 +23,8 @@ internal class PostSource(private val group: SourceGroup, override val id: Post.
                 { synchronized(this) { ongoingUpdate = null } },
                 { synchronized(this) { ongoingUpdate = null } })
 
-            group.client.getPost(id)
-                .observeOn(returnScheduler)
+            client.getPost(id)
+                .observeOn(get())
                 .doOnNext(::processIncoming)
                 .ignoreElements()
                 .subscribe(subject)
@@ -33,7 +33,7 @@ internal class PostSource(private val group: SourceGroup, override val id: Post.
         }
     }
 
-    private fun processIncoming(post: Post) {
+    internal fun processIncoming(post: Post) {
         postValue(post)
     }
 }

@@ -1,6 +1,6 @@
 package pl.kubisiak.dataflow
 
-class DistinctFactory<K, V>(private val newInstance: (K) -> V) {
+open class DistinctFactory<K, V>(private val newInstance: (K) -> V) {
     private val _locker = Any()
     private val mRepo: HashMap<K, V> = HashMap()
 

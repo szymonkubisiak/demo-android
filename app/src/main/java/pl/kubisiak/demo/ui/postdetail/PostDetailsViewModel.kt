@@ -5,14 +5,16 @@ import android.text.Html
 import android.text.Spanned
 import androidx.databinding.Bindable
 import androidx.databinding.library.baseAdapters.BR
-import org.koin.core.inject
-import pl.kubisiak.dataflow.Session
+import org.koin.core.get
+import org.koin.core.parameter.parametersOf
 import pl.kubisiak.dataflow.models.Blog
 import pl.kubisiak.dataflow.models.Post
+import pl.kubisiak.dataflow.sources.FavouritePostsSource
+import pl.kubisiak.dataflow.sources.PostSource
 import pl.kubisiak.demo.ui.BaseViewModel
 
 
-class PostDetailsViewModel(val id: Post.ID): BaseViewModel() {
+class PostDetailsViewModel(val id: Post.ID) : BaseViewModel() {
 
     private var _title: String? = null
     var title: String?
@@ -51,18 +53,17 @@ class PostDetailsViewModel(val id: Post.ID): BaseViewModel() {
         }
 
     fun makeFavourite(favourite: Boolean) {
-        group.markPostAsFavourite(if(favourite) id else null)
+        favSource.markPostAsFavourite(if (favourite) id else null)
     }
 
-    private val group: Session by inject()
-    private val source = group.getPost(id)
+    private val postSource: PostSource = get { parametersOf(id) }
+    private val favSource: FavouritePostsSource = get()
 
     init {
-        disposer.add(source.observable().subscribe {
+        disposer.add(postSource.observable().subscribe {
             model = it
             title = it.text
         })
-        val favSource = group.getFavouritePosts()
         disposer.add(favSource.observable().subscribe {
             favourite = id == it.favPostid
         })
