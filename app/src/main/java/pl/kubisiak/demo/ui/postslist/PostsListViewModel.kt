@@ -3,16 +3,14 @@ package pl.kubisiak.demo.ui.postslist
 import androidx.databinding.Bindable
 import androidx.databinding.ObservableArrayList
 import androidx.databinding.ObservableList
-import org.koin.core.KoinComponent
-import org.koin.core.inject
 import androidx.databinding.library.baseAdapters.BR
-import pl.kubisiak.dataflow.Session
 import pl.kubisiak.dataflow.models.Blog
+import pl.kubisiak.demo.koinmodule.RootComponent
 import pl.kubisiak.demo.ui.BaseViewModel
 import pl.kubisiak.demo.ui.items.PostItemViewModel
 
 
-class PostsListViewModel(val blogID: Blog.ID): BaseViewModel(), KoinComponent {
+class PostsListViewModel(val blogID: Blog.ID): BaseViewModel() {
 
     private var _list: ObservableList<BaseViewModel>? = ObservableArrayList<BaseViewModel>()
     var list: ObservableList<BaseViewModel>?
@@ -26,8 +24,7 @@ class PostsListViewModel(val blogID: Blog.ID): BaseViewModel(), KoinComponent {
         subscribeLoader(postsForBlog.update())
     }
 
-    private val group:Session by inject()
-    private val postsForBlog = group.getBlogPosts(blogID)
+    private val postsForBlog = RootComponent.instance.sessionProvider().sesion.getBlogPosts(blogID)
 
     init {
         disposer.add(postsForBlog.observable().subscribe {

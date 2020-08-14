@@ -5,10 +5,10 @@ import android.text.Html
 import android.text.Spanned
 import androidx.databinding.Bindable
 import androidx.databinding.library.baseAdapters.BR
-import org.koin.core.inject
 import pl.kubisiak.dataflow.Session
 import pl.kubisiak.dataflow.models.Blog
 import pl.kubisiak.dataflow.models.Post
+import pl.kubisiak.demo.koinmodule.RootComponent
 import pl.kubisiak.demo.ui.BaseViewModel
 
 
@@ -54,7 +54,7 @@ class PostDetailsViewModel(val id: Post.ID): BaseViewModel() {
         group.markPostAsFavourite(if(favourite) id else null)
     }
 
-    private val group: Session by inject()
+    private val group: Session = RootComponent.instance.sessionProvider().sesion
     private val source = group.getPost(id)
 
     init {

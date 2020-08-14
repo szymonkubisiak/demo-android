@@ -9,10 +9,9 @@ import androidx.lifecycle.ViewModel
 import io.reactivex.Completable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.internal.disposables.DisposableContainer
-import org.koin.core.KoinComponent
 import pl.kubisiak.demo.MyApplication
 
-open class BaseViewModel: Observable, ViewModel(), KoinComponent {
+open class BaseViewModel: Observable, ViewModel() {
     val navigator: Navigator = MyApplication.getInstance().navigator
 
     private val _disposer = CompositeDisposable()

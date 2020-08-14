@@ -2,11 +2,7 @@ package pl.kubisiak.demo
 
 import android.app.Application
 import io.reactivex.android.schedulers.AndroidSchedulers
-import org.koin.android.ext.koin.androidContext
-import org.koin.android.ext.koin.androidLogger
-import org.koin.core.context.startKoin
 import pl.kubisiak.dataflow.returnScheduler
-import pl.kubisiak.demo.koinmodule.sessionModule
 
 class MyApplication: Application() {
 
@@ -17,12 +13,6 @@ class MyApplication: Application() {
         instance = this
 
         returnScheduler = AndroidSchedulers.mainThread()
-
-        startKoin{
-            androidLogger()
-            androidContext(this@MyApplication)
-            modules(sessionModule)
-        }
     }
 
     companion object {
