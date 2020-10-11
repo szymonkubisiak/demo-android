@@ -7,10 +7,11 @@ import androidx.databinding.library.baseAdapters.BR
 import pl.kubisiak.dataflow.models.Blog
 import pl.kubisiak.demo.koinmodule.RootComponent
 import pl.kubisiak.demo.ui.BaseViewModel
+import pl.kubisiak.demo.ui.items.LoadingItemViewModel
 import pl.kubisiak.demo.ui.items.PostItemViewModel
 
 
-class PostsListViewModel(val blogID: Blog.ID): BaseViewModel() {
+class PostsListViewModel(val blogID: Blog.ID) : BaseViewModel() {
 
     private var _list: ObservableList<BaseViewModel>? = ObservableArrayList<BaseViewModel>()
     var list: ObservableList<BaseViewModel>?
@@ -24,16 +25,29 @@ class PostsListViewModel(val blogID: Blog.ID): BaseViewModel() {
         subscribeLoader(postsForBlog.update())
     }
 
-    private val postsForBlog = RootComponent.instance.sessionProvider().sesion.getBlogPosts(blogID)
+    private val postsForBlog = RootComponent.instance.sessionProvider().sesion.getBlogPosts2(blogID)
+
+
+    private var lastLoader: LoadingItemViewModel? = null
 
     init {
-        disposer.add(postsForBlog.observable().subscribe {
+        disposer.add(postsForBlog.observable().subscribe { pager ->
             val retval = ObservableArrayList<BaseViewModel>()
-                .apply {
+            list = retval
+
+            disposer.add(pager.nextPage().subscribe {
+                list?.apply {
+                    lastLoader?.also {
+                        remove(lastLoader)
+                    }
                     for (onePostId in it)
                         add(PostItemViewModel(onePostId))
+
+                    lastLoader = LoadingItemViewModel(pager)
+                    add(lastLoader)
                 }
-            list = retval
+            })
+            subscribeLoader(pager.requestNextPage())
         })
         subscribeLoader(postsForBlog.ensure())
     }

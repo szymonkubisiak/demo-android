@@ -34,6 +34,7 @@ class ViewModelAdapter(private val items: List<BaseViewModel>) : RecyclerView.Ad
             is ImageItemViewModel -> R.layout.item_image
             is SimpleItemViewModel -> R.layout.item_simpletest
             is PostItemViewModel -> R.layout.item_post
+            is LoadingItemViewModel -> R.layout.item_loader
             else -> -1
         }
     }
