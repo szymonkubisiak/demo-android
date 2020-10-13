@@ -27,9 +27,6 @@ class PostsListViewModel(val blogID: Blog.ID) : BaseViewModel() {
 
     private val postsForBlog = RootComponent.instance.sessionProvider().sesion.getBlogPosts2(blogID)
 
-
-    private var lastLoader: LoadingItemViewModel? = null
-
     init {
         disposer.add(postsForBlog.observable().subscribe { pager ->
             val retval = ObservableArrayList<BaseViewModel>()
@@ -37,17 +34,12 @@ class PostsListViewModel(val blogID: Blog.ID) : BaseViewModel() {
 
             disposer.add(pager.nextPage().subscribe {
                 list?.apply {
-                    lastLoader?.also {
-                        remove(lastLoader)
-                    }
-                    for (onePostId in it)
-                        add(PostItemViewModel(onePostId))
-
-                    lastLoader = LoadingItemViewModel(pager)
-                    add(lastLoader)
+                    (lastOrNull() as? LoadingItemViewModel)?.also { remove(it) }
+                    addAll(it.map { PostItemViewModel(it) })
+                    add(LoadingItemViewModel(pager))
                 }
             })
-            subscribeLoader(pager.requestNextPage())
+            subscribeLoader(pager.requestNextPage())//only the first page gets big loader
         })
         subscribeLoader(postsForBlog.ensure())
     }
