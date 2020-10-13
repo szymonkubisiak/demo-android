@@ -2,8 +2,8 @@ package pl.kubisiak.dataflow.sources
 
 import io.reactivex.Completable
 import io.reactivex.Observable
-import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.CompletableSubject
+import io.reactivex.subjects.PublishSubject
 import pl.kubisiak.dataflow.*
 import pl.kubisiak.dataflow.SourceGroup
 import pl.kubisiak.dataflow.models.Blog
@@ -61,7 +61,7 @@ internal class PostForBlogPager(private val group: SourceGroup, override val id:
 
 abstract class BasePager<T> : Pager<T> {
 
-    protected val observable: BehaviorSubject<T> = BehaviorSubject.create()
+    protected val observable: PublishSubject<T> = PublishSubject.create()
 
     override fun nextPage(): Observable<T> =
         observable
