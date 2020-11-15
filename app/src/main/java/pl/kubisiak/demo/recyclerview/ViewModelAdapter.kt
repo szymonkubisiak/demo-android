@@ -5,12 +5,13 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ObservableList
 import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import pl.kubisiak.demo.R
 import pl.kubisiak.demo.ui.BaseViewModel
 import pl.kubisiak.demo.ui.items.*
 
-open class ViewModelAdapter(protected open val items: List<BaseViewModel>) : RecyclerView.Adapter<ViewModelViewHolder>()  {
+open class ViewModelAdapter(protected open val items: List<BaseViewModel>) : RecyclerView.Adapter<ViewModelViewHolder>() {
 
     override fun getItemCount(): Int =
         items.size
@@ -18,6 +19,11 @@ open class ViewModelAdapter(protected open val items: List<BaseViewModel>) : Rec
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewModelViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = DataBindingUtil.inflate<ViewDataBinding>(inflater, viewType, parent, false)
+        //TODO: set appropriate lifecycle owner
+        val lifecycleOwner = parent.context as? LifecycleOwner
+        lifecycleOwner?.also {
+            binding.lifecycleOwner = it
+        }
         return ViewModelViewHolder(binding)
     }
 
@@ -44,7 +50,7 @@ open class ViewModelAdapter(protected open val items: List<BaseViewModel>) : Rec
 class ViewModelObserverAdapter(override val items: ObservableList<BaseViewModel>) : ViewModelAdapter(items) {
     private val eventTranslator = ListChangedEventTranslator<BaseViewModel>(this)
 
-    fun isListSame(newItems: ObservableList<BaseViewModel>?):Boolean {
+    fun isListSame(newItems: ObservableList<BaseViewModel>?): Boolean {
         return newItems === items
     }
 
@@ -81,7 +87,7 @@ internal class ListChangedEventTranslator<T>(private val adapter: RecyclerView.A
     }
 
     override fun onItemRangeMoved(sender: ObservableList<T>?, fromPosition: Int, toPosition: Int, itemCount: Int) {
-        if(itemCount == 1)
+        if (itemCount == 1)
             adapter.notifyItemMoved(fromPosition, toPosition)
         else
             adapter.notifyDataSetChanged()
