@@ -8,6 +8,7 @@ import androidx.databinding.library.baseAdapters.BR
 import androidx.lifecycle.ViewModel
 import io.reactivex.Completable
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 import io.reactivex.internal.disposables.DisposableContainer
 import pl.kubisiak.demo.MyApplication
 
@@ -46,7 +47,12 @@ open class BaseViewModel: Observable, ViewModel() {
         }
     }
 
-    //from BaseObservable:
+    protected operator fun DisposableContainer.plusAssign(subscription: Disposable) {
+        if (!this.add(subscription))
+            throw IllegalStateException("Container already disposed")
+    }
+
+    //region from BaseObservable:
     @Transient
     private var mCallbacks: PropertyChangeRegistry? = null
 
@@ -83,4 +89,5 @@ open class BaseViewModel: Observable, ViewModel() {
         }
         mCallbacks!!.notifyCallbacks(this, fieldId, null)
     }
+    //endregion
 }

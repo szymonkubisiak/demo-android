@@ -8,6 +8,7 @@
         <variable
             name="vm"
             type="pl.kubisiak.demo.ui.main.MainViewModel" />
+        <import type="pl.kubisiak.demo.ui.SpinnerDTS" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -46,34 +47,69 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
             android:text="@={vm.title}"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/touchMe"
             app:layout_constraintEnd_toStartOf="@id/blogHandleSuffix"
-            />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/touchMe" />
+
         <TextView
             android:id="@+id/blogHandleSuffix"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="12dp"
             android:text=".tumblr.com"
             app:layout_constraintBottom_toBottomOf="@id/editBlogHandle"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/posts"
             app:layout_constraintStart_toEndOf="@id/editBlogHandle"
-
-            />
+            app:layout_constraintTop_toTopOf="@+id/editBlogHandle" />
 
         <Button
             android:id="@+id/posts"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="3dp"
+            android:layout_marginBottom="13dp"
             android:onClick="@{() -> vm.onPostsListClicked()}"
             android:text="posts"
+            app:layout_constraintBottom_toBottomOf="@+id/editBlogHandle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/editBlogHandle" />
+
+        <TextView
+            android:id="@+id/separatorText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="OR"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/editBlogHandle"
-            />
+            app:layout_constraintTop_toBottomOf="@id/editBlogHandle" />
+
+        <Spinner
+            android:id="@+id/spinnerTest"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            app:dataTemplateSelector="@{SpinnerDTS.INSTANCE}"
+            app:items="@{vm.list}"
+            app:currentItem="@={vm.currentItem}"
+            app:layout_constraintEnd_toStartOf="@+id/postsFromSpinner"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/separatorText" />
+
+        <Button
+            android:id="@+id/postsFromSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            android:layout_marginBottom="13dp"
+            android:onClick="@{() -> vm.onPostsFromSpinnerClicked()}"
+            android:text="posts"
+            app:layout_constraintBottom_toBottomOf="@+id/spinnerTest"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/spinnerTest" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
