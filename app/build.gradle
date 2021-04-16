@@ -1,17 +1,14 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
-
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 30
     defaultConfig {
         applicationId "pl.kubisiak.demo"
         minSdkVersion 21
-        targetSdkVersion 28
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -45,7 +42,6 @@ dependencies {
     implementation project(':data-jumblr')
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.core:core-ktx:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
