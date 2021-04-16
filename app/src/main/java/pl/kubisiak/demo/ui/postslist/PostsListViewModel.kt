@@ -7,7 +7,7 @@ import androidx.databinding.library.baseAdapters.BR
 import io.reactivex.disposables.Disposable
 import pl.kubisiak.dataflow.Pager
 import pl.kubisiak.dataflow.models.Blog
-import pl.kubisiak.demo.koinmodule.RootComponent
+import pl.kubisiak.demo.dagger.RootComponent
 import pl.kubisiak.demo.ui.BaseViewModel
 import pl.kubisiak.demo.ui.items.LoadingItemViewModel
 import pl.kubisiak.demo.ui.items.PostItemViewModel

@@ -6,7 +6,7 @@ import androidx.databinding.Bindable
 import androidx.databinding.library.baseAdapters.BR
 import pl.kubisiak.dataflow.Session
 import pl.kubisiak.dataflow.models.Post
-import pl.kubisiak.demo.koinmodule.RootComponent
+import pl.kubisiak.demo.dagger.RootComponent
 import pl.kubisiak.demo.ui.BaseViewModel
 
 class PostItemViewModel (val id: Post.ID): BaseViewModel() {

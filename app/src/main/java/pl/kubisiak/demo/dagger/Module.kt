@@ -1,4 +1,4 @@
-package pl.kubisiak.demo.koinmodule
+package pl.kubisiak.demo.dagger
 
 import dagger.Component
 import dagger.Module
