@@ -1,2 +1,5 @@
-include ':app', ':domain', ':data-jumblr'
 rootProject.name='demo'
+include ':app'
+include ':domain'
+include ':ui'
+include ':data-jumblr'

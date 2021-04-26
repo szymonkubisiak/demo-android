@@ -10,10 +10,14 @@ import io.reactivex.schedulers.Schedulers
 import pl.kubisiak.dataflow.BlogClient
 import pl.kubisiak.dataflow.models.Blog
 import pl.kubisiak.dataflow.models.Post
+import javax.inject.Inject
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 class JumblrWrapper(consumerKey: String, consumerSecret: String) : BlogClient {
+
+    @Inject
+    public constructor (config: TumblrClientKey) : this(config.consumerKey, config.consumerKey)
 
     private val client = JumblrClient(consumerKey, consumerSecret)
 
@@ -37,7 +41,7 @@ class JumblrWrapper(consumerKey: String, consumerSecret: String) : BlogClient {
                 continue@postsLoop
             }
         }
-        return(retval)
+        return (retval)
     }
 
     override fun getPostsForBlog(id: Blog.ID, offset: Int?, limit: Int?): Observable<List<Post>> {
@@ -51,7 +55,7 @@ class JumblrWrapper(consumerKey: String, consumerSecret: String) : BlogClient {
         val blog = client.blogInfo(blogid.rawValue())
         val post: com.tumblr.jumblr.types.Post = blog.getPost(id.rawValue())
         val postModel = mapper_post(post, id)
-        return(postModel)
+        return (postModel)
     }
 
     override fun getPost(id: Post.ID): Observable<Post> {

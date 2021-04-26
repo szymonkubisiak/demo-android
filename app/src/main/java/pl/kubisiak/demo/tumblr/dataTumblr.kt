@@ -1,7 +1,11 @@
 package pl.kubisiak.demo.tumblr
 
 import android.util.Base64
-import pl.kubisiak.data.jumblr.JumblrWrapper
+import dagger.Module
+import dagger.Provides
+import pl.kubisiak.data.jumblr.TumblrClientKey
+import pl.kubisiak.dataflow.dagger.SessionProvider
+import pl.kubisiak.demo.dagger.SessionProviderImpl
 
 import kotlin.experimental.xor
 
@@ -28,4 +32,17 @@ fun obfuscateString(input: String, realLen: Int?): String {
     }
 }
 
-fun newClient() = JumblrWrapper(obfuscateString(key, 50), obfuscateString(scr, 50))
+@Module
+class ApplicationModule {
+    @Provides
+    fun provideTumblrConfig() = TumblrClientKey(obfuscateString(key, 50), obfuscateString(scr, 50))
+
+    @Provides
+    fun bindSessionProvider(impl: SessionProviderImpl) : SessionProvider = impl
+
+    //TODO 20210429 fix Context provider
+//    @Provides
+//    fun provideContext(): Context {
+//        return MyApplication.getInstance().applicationContext
+//    }
+}
