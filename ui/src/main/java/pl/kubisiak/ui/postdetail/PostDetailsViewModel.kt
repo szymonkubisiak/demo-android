@@ -54,7 +54,7 @@ class PostDetailsViewModel(val id: Post.ID): BaseViewModel() {
         group.markPostAsFavourite(if(favourite) id else null)
     }
 
-    private val group: Session = RootComponent.instance.sessionProvider().sesion
+    private val group: Session = RootComponent.instance.session()
     private val source = group.getPost(id)
 
     init {

@@ -4,6 +4,8 @@ import io.reactivex.Observable
 import io.reactivex.Scheduler
 import pl.kubisiak.dataflow.models.*
 import pl.kubisiak.dataflow.sources.*
+import javax.inject.Inject
+import javax.inject.Singleton
 
 interface Session {
     fun getPost(id: Post.ID): Source<Post>
@@ -13,7 +15,8 @@ interface Session {
     fun markPostAsFavourite(id: Post.ID?)
 }
 
-internal class SourceGroup(val client: BlogClient) : Session {
+@Singleton
+class SourceGroup @Inject constructor(val client: BlogClient) : Session {
     internal val posts = DistinctFactory<Post.ID, PostSource> { PostSource(this, it) }
     internal val blogs2 = DistinctFactory<Blog.ID, PostsForBlogPaginatedSource> { PostsForBlogPaginatedSource(this, it) }
     internal val blogs = DistinctFactory<Blog.ID, PostsForBlogSource> { PostsForBlogSource(this, it) }
@@ -25,8 +28,6 @@ internal class SourceGroup(val client: BlogClient) : Session {
     override fun getFavouritePosts(): Source<FavouritePosts> = favouritePosts
     override fun markPostAsFavourite(id: Post.ID?) = favouritePosts.tmpChangeState(id)
 }
-
-fun createSession(client: BlogClient): Session = SourceGroup(client)
 
 var returnScheduler: Scheduler? = null
 

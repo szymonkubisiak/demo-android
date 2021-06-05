@@ -49,7 +49,7 @@ class PostItemViewModel (val id: Post.ID): BaseViewModel() {
         group.markPostAsFavourite(if(favourite) id else null)
     }
 
-    private val group:Session = RootComponent.instance.sessionProvider().sesion
+    private val group:Session = RootComponent.instance.session()
 
     init {
         val source = group.getPost(id)

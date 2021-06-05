@@ -27,7 +27,7 @@ class PostsListViewModel(val blogID: Blog.ID) : BaseViewModel() {
         subscribeLoader(postsForBlog.update())
     }
 
-    private val postsForBlog = RootComponent.instance.sessionProvider().sesion.getBlogPosts2(blogID)
+    private val postsForBlog = RootComponent.instance.session().getBlogPosts2(blogID)
 
     init {
         disposer.add(postsForBlog.observable().subscribe { pager ->
