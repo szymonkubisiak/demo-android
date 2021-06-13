@@ -4,16 +4,15 @@ import android.text.Html
 import android.text.Spanned
 import androidx.databinding.Bindable
 import androidx.databinding.library.baseAdapters.BR
-import pl.kubisiak.dataflow.Session
 import pl.kubisiak.dataflow.models.Post
 import pl.kubisiak.ui.dagger.RootComponent
 import pl.kubisiak.ui.BaseViewModel
 
-class PostItemViewModel (val id: Post.ID): BaseViewModel() {
+class PostItemViewModel(val id: Post.ID) : BaseViewModel() {
 
     private var _title: String? = null
     var title: String?
-    @Bindable get() = _title
+        @Bindable get() = _title
         set(value) {
             _title = value
             notifyPropertyChanged(BR.title)
@@ -46,20 +45,20 @@ class PostItemViewModel (val id: Post.ID): BaseViewModel() {
         }
 
     fun makeFavourite(favourite: Boolean) {
-        group.markPostAsFavourite(if(favourite) id else null)
+        favSource.tmpChangeState(if (favourite) id else null)
     }
 
-    private val group:Session = RootComponent.instance.session()
+    val favSource = RootComponent.instance.favourites()
 
     init {
-        val source = group.getPost(id)
-        disposer.add( source.observable().subscribe {
+        val source = RootComponent.instance.postDepot().get(id)
+        disposer.add(source.observable().subscribe {
             title = it.text
             imageurl = it.imageUrl
-        } )
-        val favSource = group.getFavouritePosts()
-        disposer.add( favSource.observable().subscribe {
+        })
+
+        disposer.add(favSource.observable().subscribe {
             favourite = id == it.favPostid
-        } )
+        })
     }
 }

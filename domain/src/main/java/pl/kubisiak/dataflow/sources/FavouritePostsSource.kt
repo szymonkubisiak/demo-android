@@ -1,13 +1,19 @@
 package pl.kubisiak.dataflow.sources
 
 import io.reactivex.Completable
+import io.reactivex.Scheduler
 import pl.kubisiak.dataflow.BaseSource
-import pl.kubisiak.dataflow.SourceGroup
 import pl.kubisiak.dataflow.models.FavouritePosts
 import pl.kubisiak.dataflow.models.Post
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
+import javax.inject.Named
+import javax.inject.Singleton
 
-internal class FavouritePostsSource(private val group: SourceGroup): BaseSource<FavouritePosts>() {
+@Singleton
+class FavouritePostsSource @Inject constructor(
+    @Named("sourceReturn") private val returnScheduler: Scheduler,
+) : BaseSource<FavouritePosts>() {
     override fun update(): Completable {
         return Completable.complete()
     }
@@ -15,7 +21,7 @@ internal class FavouritePostsSource(private val group: SourceGroup): BaseSource<
     fun tmpChangeState(newFavID: Post.ID?) {
         Completable
             .timer(2, TimeUnit.SECONDS)
-            //.observeOn(AndroidSchedulers.mainThread())
-            .subscribe{ postValue(FavouritePosts(newFavID))}
+            .observeOn(returnScheduler)
+            .subscribe { postValue(FavouritePosts(newFavID)) }
     }
 }

@@ -10,11 +10,15 @@ import io.reactivex.schedulers.Schedulers
 import pl.kubisiak.dataflow.*
 import pl.kubisiak.dataflow.models.Blog
 import pl.kubisiak.dataflow.models.Post
+import pl.kubisiak.dataflow.repos.PostRepo
+import pl.kubisiak.dataflow.repos.PostsForBlogRepo
 import javax.inject.Inject
+import javax.inject.Singleton
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-class JumblrWrapper(consumerKey: String, consumerSecret: String) : BlogClient, PostsForBlogRepo, PostRepo {
+@Singleton
+class JumblrWrapper(consumerKey: String, consumerSecret: String) : PostsForBlogRepo, PostRepo {
 
     @Inject
     public constructor (config: TumblrClientKey) : this(config.consumerKey, config.consumerKey)

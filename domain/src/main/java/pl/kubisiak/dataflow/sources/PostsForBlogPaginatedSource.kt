@@ -1,22 +1,31 @@
 package pl.kubisiak.dataflow.sources
 
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import io.reactivex.Completable
 import io.reactivex.Observable
+import io.reactivex.Scheduler
 import io.reactivex.subjects.CompletableSubject
 import io.reactivex.subjects.PublishSubject
 import pl.kubisiak.dataflow.*
 import pl.kubisiak.dataflow.models.Blog
 import pl.kubisiak.dataflow.models.Post
+import pl.kubisiak.dataflow.repos.PostsForBlogRepo
+import javax.inject.Inject
+import javax.inject.Named
+import javax.inject.Singleton
 import kotlin.collections.ArrayList
 
-internal class PostsForBlogPaginatedSource(
+internal class PostsForBlogPaginatedSource @AssistedInject constructor(
     private val repo: PostsForBlogRepo,
     private val postsDepot: Depot<Post.ID, PostSource>,
-    override val id: Blog.ID
+    @Named("sourceReturn") private val returnScheduler: Scheduler,
+    @Assisted override val id: Blog.ID
 ) : Identifiable<Blog.ID>, BaseSource<Pager<List<Post.ID>>>() {
     override fun update(): Completable {
         synchronized(this) {
-            val retval = PostForBlogPager(repo, postsDepot, id)
+            val retval = PostForBlogPager(repo, postsDepot, returnScheduler, id)
             postValue(retval)
             return retval.requestNextPage()
         }
@@ -26,6 +35,7 @@ internal class PostsForBlogPaginatedSource(
 internal class PostForBlogPager(
     private val repo: PostsForBlogRepo,
     private val postsDepot: Depot<Post.ID, PostSource>,
+    @Named("sourceReturn") private val returnScheduler: Scheduler,
     override val id: Blog.ID
 ) : Identifiable<Blog.ID>, BasePager<List<Post.ID>>() {
     private var ongoingUpdate: Completable? = null
@@ -79,3 +89,13 @@ abstract class BasePager<T> : Pager<T> {
         observable.onNext(newValue)
     }
 }
+
+@AssistedFactory
+internal interface PostsForBlogPaginatedAssistedFactory {
+    fun get(id: Blog.ID): PostsForBlogPaginatedSource
+}
+
+@Singleton
+internal class PostsForBlogPaginatedDepot @Inject constructor(
+    factory: PostsForBlogPaginatedAssistedFactory
+) : DistinctFactory<Blog.ID, PostsForBlogPaginatedSource>(factory::get)

@@ -1,16 +1,25 @@
 package pl.kubisiak.dataflow.sources
 
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import io.reactivex.Completable
+import io.reactivex.Scheduler
 import io.reactivex.subjects.CompletableSubject
 import pl.kubisiak.dataflow.*
 import pl.kubisiak.dataflow.models.Blog
 import pl.kubisiak.dataflow.models.Post
+import pl.kubisiak.dataflow.repos.PostsForBlogRepo
+import javax.inject.Inject
+import javax.inject.Named
+import javax.inject.Singleton
 import kotlin.collections.ArrayList
 
-internal class PostsForBlogSource(
+internal class PostsForBlogSource @AssistedInject constructor(
     private val repo: PostsForBlogRepo,
     private val postsDepot: Depot<Post.ID, PostSource>,
-    override val id: Blog.ID
+    @Named("sourceReturn") private val returnScheduler: Scheduler,
+    @Assisted override val id: Blog.ID
 ) : Identifiable<Blog.ID>, BaseSource<List<Post.ID>>() {
     private var ongoingUpdate: Completable? = null
 
@@ -47,3 +56,13 @@ internal class PostsForBlogSource(
         postValue(retval)
     }
 }
+
+@AssistedFactory
+internal interface PostsForBlogAssistedFactory {
+    fun get(id: Blog.ID): PostsForBlogSource
+}
+
+@Singleton
+internal class PostsForBlogDepot @Inject constructor(
+    factory: PostsForBlogAssistedFactory
+) : DistinctFactory<Blog.ID, PostsForBlogSource>(factory::get)
