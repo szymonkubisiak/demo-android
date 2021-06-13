@@ -4,11 +4,14 @@ import io.reactivex.Completable
 import io.reactivex.subjects.CompletableSubject
 import pl.kubisiak.dataflow.BaseSource
 import pl.kubisiak.dataflow.Identifiable
-import pl.kubisiak.dataflow.SourceGroup
+import pl.kubisiak.dataflow.PostRepo
 import pl.kubisiak.dataflow.models.Post
 import pl.kubisiak.dataflow.returnScheduler
 
-internal class PostSource(private val group: SourceGroup, override val id: Post.ID): Identifiable<Post.ID>, BaseSource<Post>() {
+internal class PostSource(
+    private val repo: PostRepo,
+    override val id: Post.ID
+) : Identifiable<Post.ID>, BaseSource<Post>() {
     private var ongoingUpdate: Completable? = null
 
     override fun update(): Completable {
@@ -23,7 +26,7 @@ internal class PostSource(private val group: SourceGroup, override val id: Post.
                 { synchronized(this) { ongoingUpdate = null } },
                 { synchronized(this) { ongoingUpdate = null } })
 
-            group.client.getPost(id)
+            repo.getPost(id)
                 .observeOn(returnScheduler)
                 .doOnNext(::processIncoming)
                 .ignoreElements()

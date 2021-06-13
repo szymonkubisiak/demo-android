@@ -5,26 +5,33 @@ import io.reactivex.Observable
 import io.reactivex.subjects.CompletableSubject
 import io.reactivex.subjects.PublishSubject
 import pl.kubisiak.dataflow.*
-import pl.kubisiak.dataflow.SourceGroup
 import pl.kubisiak.dataflow.models.Blog
 import pl.kubisiak.dataflow.models.Post
 import kotlin.collections.ArrayList
 
-internal class PostsForBlogPaginatedSource(private val group: SourceGroup, override val id: Blog.ID): Identifiable<Blog.ID>, BaseSource<Pager<List<Post.ID>>>() {
+internal class PostsForBlogPaginatedSource(
+    private val repo: PostsForBlogRepo,
+    private val postsDepot: Depot<Post.ID, PostSource>,
+    override val id: Blog.ID
+) : Identifiable<Blog.ID>, BaseSource<Pager<List<Post.ID>>>() {
     override fun update(): Completable {
         synchronized(this) {
-            val retval = PostForBlogPager(group, id)
+            val retval = PostForBlogPager(repo, postsDepot, id)
             postValue(retval)
             return retval.requestNextPage()
         }
     }
 }
 
-internal class PostForBlogPager(private val group: SourceGroup, override val id: Blog.ID): Identifiable<Blog.ID>, BasePager<List<Post.ID>>() {
+internal class PostForBlogPager(
+    private val repo: PostsForBlogRepo,
+    private val postsDepot: Depot<Post.ID, PostSource>,
+    override val id: Blog.ID
+) : Identifiable<Blog.ID>, BasePager<List<Post.ID>>() {
     private var ongoingUpdate: Completable? = null
     private var offset: Int = 0
 
-    override fun requestNextPage(): Completable{
+    override fun requestNextPage(): Completable {
         synchronized(this) {
             ongoingUpdate?.also {
                 return it
@@ -36,7 +43,7 @@ internal class PostForBlogPager(private val group: SourceGroup, override val id:
                 { synchronized(this) { ongoingUpdate = null } },
                 { synchronized(this) { ongoingUpdate = null } })
 
-            group.client.getPostsForBlog(id, offset, 5)
+            repo.getPostsForBlog(id, offset, 5)
                 .observeOn(returnScheduler)
                 .doOnNext(::processIncoming)
                 .ignoreElements()
@@ -51,7 +58,7 @@ internal class PostForBlogPager(private val group: SourceGroup, override val id:
         offset += posts.size
         val retval = ArrayList<Post.ID>()
         for (postModel in posts) {
-            val postUC = group.posts[postModel.id]
+            val postUC = postsDepot.get(postModel.id)
             postUC.postValue(postModel)
             retval.add(postModel.id)
         }

@@ -16,11 +16,13 @@ interface Session {
 }
 
 @Singleton
-class SourceGroup @Inject constructor(val client: BlogClient) : Session {
-    internal val posts = DistinctFactory<Post.ID, PostSource> { PostSource(this, it) }
-    internal val blogs2 = DistinctFactory<Blog.ID, PostsForBlogPaginatedSource> { PostsForBlogPaginatedSource(this, it) }
-    internal val blogs = DistinctFactory<Blog.ID, PostsForBlogSource> { PostsForBlogSource(this, it) }
-    internal val favouritePosts = FavouritePostsSource(this)
+class SourceGroup @Inject constructor(
+    private val client: BlogClient
+) : Session {
+    private val posts = DistinctFactory<Post.ID, PostSource> { PostSource(client, it) }
+    private val blogs2 = DistinctFactory<Blog.ID, PostsForBlogPaginatedSource> { PostsForBlogPaginatedSource(client, posts, it) }
+    private val blogs = DistinctFactory<Blog.ID, PostsForBlogSource> { PostsForBlogSource(client, posts, it) }
+    private val favouritePosts = FavouritePostsSource(this)
 
     override fun getPost(id: Post.ID): Source<Post> = posts[id]
     override fun getBlogPosts(id: Blog.ID): Source<List<Post.ID>> = blogs[id]
@@ -31,7 +33,15 @@ class SourceGroup @Inject constructor(val client: BlogClient) : Session {
 
 var returnScheduler: Scheduler? = null
 
-interface BlogClient {
+interface BlogClient : PostsForBlogRepo, PostRepo {
+    override fun getPostsForBlog(id: Blog.ID, offset: Int?, limit: Int?): Observable<List<Post>>
+    override fun getPost(id: Post.ID): Observable<Post>
+}
+
+interface PostsForBlogRepo {
     fun getPostsForBlog(id: Blog.ID, offset: Int?, limit: Int?): Observable<List<Post>>
+}
+
+interface PostRepo {
     fun getPost(id: Post.ID): Observable<Post>
 }

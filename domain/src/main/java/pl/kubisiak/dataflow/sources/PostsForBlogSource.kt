@@ -2,15 +2,16 @@ package pl.kubisiak.dataflow.sources
 
 import io.reactivex.Completable
 import io.reactivex.subjects.CompletableSubject
-import pl.kubisiak.dataflow.BaseSource
-import pl.kubisiak.dataflow.Identifiable
-import pl.kubisiak.dataflow.SourceGroup
+import pl.kubisiak.dataflow.*
 import pl.kubisiak.dataflow.models.Blog
 import pl.kubisiak.dataflow.models.Post
-import pl.kubisiak.dataflow.returnScheduler
 import kotlin.collections.ArrayList
 
-internal class PostsForBlogSource(private val group: SourceGroup, override val id: Blog.ID): Identifiable<Blog.ID>, BaseSource<List<Post.ID>>() {
+internal class PostsForBlogSource(
+    private val repo: PostsForBlogRepo,
+    private val postsDepot: Depot<Post.ID, PostSource>,
+    override val id: Blog.ID
+) : Identifiable<Blog.ID>, BaseSource<List<Post.ID>>() {
     private var ongoingUpdate: Completable? = null
 
     override fun update(): Completable {
@@ -24,8 +25,8 @@ internal class PostsForBlogSource(private val group: SourceGroup, override val i
             subject.subscribe(
                 { synchronized(this) { ongoingUpdate = null } },
                 { synchronized(this) { ongoingUpdate = null } })
-            
-            group.client.getPostsForBlog(id, null, null)
+
+            repo.getPostsForBlog(id, null, null)
                 .observeOn(returnScheduler)
                 .doOnNext(::processIncoming)
                 .ignoreElements()
@@ -39,7 +40,7 @@ internal class PostsForBlogSource(private val group: SourceGroup, override val i
     private fun processIncoming(posts: List<Post>) {
         val retval = ArrayList<Post.ID>()
         for (postModel in posts) {
-            val postUC = group.posts[postModel.id]
+            val postUC = postsDepot.get(postModel.id)
             postUC.postValue(postModel)
             retval.add(postModel.id)
         }

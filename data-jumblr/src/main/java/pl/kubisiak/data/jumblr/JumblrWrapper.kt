@@ -7,14 +7,14 @@ import com.tumblr.jumblr.types.PhotoPost
 import com.tumblr.jumblr.types.TextPost
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
-import pl.kubisiak.dataflow.BlogClient
+import pl.kubisiak.dataflow.*
 import pl.kubisiak.dataflow.models.Blog
 import pl.kubisiak.dataflow.models.Post
 import javax.inject.Inject
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-class JumblrWrapper(consumerKey: String, consumerSecret: String) : BlogClient {
+class JumblrWrapper(consumerKey: String, consumerSecret: String) : BlogClient, PostsForBlogRepo, PostRepo {
 
     @Inject
     public constructor (config: TumblrClientKey) : this(config.consumerKey, config.consumerKey)
