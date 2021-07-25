@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/demo.iml" filepath="$PROJECT_DIR$/demo.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/demo.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/demo.app.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/data-jumblr/demo.data-jumblr.iml" filepath="$PROJECT_DIR$/.idea/modules/data-jumblr/demo.data-jumblr.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/data-retrofit-tumblr/demo.data-retrofit-tumblr.iml" filepath="$PROJECT_DIR$/.idea/modules/data-retrofit-tumblr/demo.data-retrofit-tumblr.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/domain/demo.domain.iml" filepath="$PROJECT_DIR$/.idea/modules/domain/demo.domain.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/ui/demo.ui.iml" filepath="$PROJECT_DIR$/.idea/modules/ui/demo.ui.iml" />
     </modules>

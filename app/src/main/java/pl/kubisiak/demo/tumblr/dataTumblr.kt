@@ -7,6 +7,7 @@ import pl.kubisiak.data.jumblr.TumblrClientKey
 
 import kotlin.experimental.xor
 
+//I'm considering this key already burnt. The obfuscation serves nothing but to stop autonomous crawlers.
 val key = "2Vk28MvG9XiyX4h3fUHp7WwEuik5ukLBA+RLA0UmE6kfnCg2DBZp2Uexe7ws"
 val scr = "mFpMsonC9ILU3tabjm3F6Bxf5yHXwvRyyVBeDHDknBfSIV5a3JZoOE3xWtw4"
 
@@ -34,6 +35,9 @@ fun obfuscateString(input: String, realLen: Int?): String {
 class ApplicationModule {
     @Provides
     fun provideTumblrConfig() = TumblrClientKey(obfuscateString(key, 50), obfuscateString(scr, 50))
+
+    @Provides
+    fun provideTumblrConfig2() = pl.kubisiak.data.tumblr.TumblrClientKey(obfuscateString(key, 50), obfuscateString(scr, 50))
 
     //TODO 20210429 fix Context provider
 //    @Provides
