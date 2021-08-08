@@ -11,7 +11,7 @@ import pl.kubisiak.ui.R
 import pl.kubisiak.ui.items.*
 import pl.kubisiak.ui.BaseViewModel
 
-open class ViewModelAdapter(protected open val items: List<BaseViewModel>) : RecyclerView.Adapter<ViewModelViewHolder>() {
+open class ViewModelAdapter<VM : BaseViewModel>(protected open val items: List<VM>) : RecyclerView.Adapter<ViewModelViewHolder>() {
 
     override fun getItemCount(): Int =
         items.size
@@ -47,10 +47,10 @@ open class ViewModelAdapter(protected open val items: List<BaseViewModel>) : Rec
     }
 }
 
-class ViewModelObserverAdapter(override val items: ObservableList<BaseViewModel>) : ViewModelAdapter(items) {
-    private val eventTranslator = ListChangedEventTranslator<BaseViewModel>(this)
+class ViewModelObserverAdapter<VM : BaseViewModel>(override val items: ObservableList<VM>) : ViewModelAdapter<VM>(items) {
+    private val eventTranslator = ListChangedEventTranslator<VM>(this)
 
-    fun isListSame(newItems: ObservableList<BaseViewModel>?): Boolean {
+    fun <VM : BaseViewModel> isListSame(newItems: ObservableList<VM>?): Boolean {
         return newItems === items
     }
 
