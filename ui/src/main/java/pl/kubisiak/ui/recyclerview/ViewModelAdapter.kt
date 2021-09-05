@@ -1,5 +1,6 @@
 package pl.kubisiak.ui.recyclerview
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -21,7 +22,7 @@ open class ViewModelAdapter<VM : BaseViewModel>(protected open val items: List<V
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewModelViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = DataBindingUtil.inflate<ViewDataBinding>(inflater, viewType, parent, false)
-        binding.lifecycleOwner = ViewTreeLifecycleOwner.get(parent)?: parent.context as LifecycleOwner
+        binding.lifecycleOwner = ViewTreeLifecycleOwner.get(parent) ?: parent.context as LifecycleOwner
         return ViewModelViewHolder(binding)
     }
 
@@ -53,16 +54,16 @@ class ViewModelObserverAdapter<VM : BaseViewModel>(override val items: Observabl
     }
 
     init {
-        items.addOnListChangedCallback(eventTranslator)
+        eventTranslator.subscribeTo(items)
     }
 
 //TODO: research using onAttached instead of init
 //    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
-//        items.addOnListChangedCallback(eventTranslator)
+//        eventTranslator.subscribeTo(items)
 //    }
 
     override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
-        items.removeOnListChangedCallback(eventTranslator)
+        eventTranslator.unsubscribeFrom(items)
     }
 }
 
@@ -73,31 +74,39 @@ class ViewModelObserverAdapter<VM : BaseViewModel>(override val items: Observabl
 //TODO: Needs more research if the weak observing breaks anything.
 internal class ListChangedEventTranslator<T>(strongAdapter: RecyclerView.Adapter<*>) : ObservableList.OnListChangedCallback<ObservableList<T>>() {
     private val weakAdapter = WeakReference(strongAdapter)
-    private val adapter : RecyclerView.Adapter<*>?
-    get() {
+    private fun getAdapter(list: ObservableList<T>?): RecyclerView.Adapter<*>? {
         val retval = weakAdapter.get()
+        if (retval == null) {
+            unsubscribeFrom(list)
+        }
         return retval
     }
+
+    @SuppressLint("NotifyDataSetChanged")
     override fun onChanged(sender: ObservableList<T>?) {
-        adapter?.notifyDataSetChanged()
+        getAdapter(sender)?.notifyDataSetChanged()
     }
 
     override fun onItemRangeChanged(sender: ObservableList<T>?, positionStart: Int, itemCount: Int) {
-        adapter?.notifyItemRangeChanged(positionStart, itemCount)
+        getAdapter(sender)?.notifyItemRangeChanged(positionStart, itemCount)
     }
 
     override fun onItemRangeInserted(sender: ObservableList<T>?, positionStart: Int, itemCount: Int) {
-        adapter?.notifyItemRangeInserted(positionStart, itemCount)
+        getAdapter(sender)?.notifyItemRangeInserted(positionStart, itemCount)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onItemRangeMoved(sender: ObservableList<T>?, fromPosition: Int, toPosition: Int, itemCount: Int) {
         if (itemCount == 1)
-            adapter?.notifyItemMoved(fromPosition, toPosition)
+            getAdapter(sender)?.notifyItemMoved(fromPosition, toPosition)
         else
-            adapter?.notifyDataSetChanged()
+            getAdapter(sender)?.notifyDataSetChanged()
     }
 
     override fun onItemRangeRemoved(sender: ObservableList<T>?, positionStart: Int, itemCount: Int) {
-        adapter?.notifyItemRangeRemoved(positionStart, itemCount)
+        getAdapter(sender)?.notifyItemRangeRemoved(positionStart, itemCount)
     }
+
+    fun subscribeTo(list: ObservableList<T>?) = list?.addOnListChangedCallback(this)
+    fun unsubscribeFrom(list: ObservableList<T>?) = list?.removeOnListChangedCallback(this)
 }
