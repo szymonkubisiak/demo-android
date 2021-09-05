@@ -1,7 +1,7 @@
 package pl.kubisiak.dataflow.sources
 
-import io.reactivex.Completable
-import io.reactivex.Scheduler
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Scheduler
 import pl.kubisiak.dataflow.BaseSource
 import pl.kubisiak.dataflow.models.FavouritePosts
 import pl.kubisiak.dataflow.models.Post

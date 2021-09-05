@@ -2,7 +2,7 @@ package pl.kubisiak.ui.dagger
 
 import dagger.Module
 import dagger.Provides
-import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import pl.kubisiak.dataflow.*
 import pl.kubisiak.dataflow.models.*
 import pl.kubisiak.dataflow.sources.FavouritePostsSource

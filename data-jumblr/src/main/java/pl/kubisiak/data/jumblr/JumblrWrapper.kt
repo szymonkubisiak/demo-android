@@ -5,8 +5,8 @@ import com.tumblr.jumblr.types.AnswerPost
 import com.tumblr.jumblr.types.ChatPost
 import com.tumblr.jumblr.types.PhotoPost
 import com.tumblr.jumblr.types.TextPost
-import io.reactivex.Observable
-import io.reactivex.schedulers.Schedulers
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.schedulers.Schedulers
 import pl.kubisiak.dataflow.*
 import pl.kubisiak.dataflow.models.Blog
 import pl.kubisiak.dataflow.models.Post

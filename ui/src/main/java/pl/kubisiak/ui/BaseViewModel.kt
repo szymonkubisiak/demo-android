@@ -6,10 +6,10 @@ import androidx.databinding.Observable.OnPropertyChangedCallback
 import androidx.databinding.PropertyChangeRegistry
 import androidx.databinding.library.baseAdapters.BR
 import androidx.lifecycle.ViewModel
-import io.reactivex.Completable
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
-import io.reactivex.internal.disposables.DisposableContainer
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.disposables.DisposableContainer
 import pl.kubisiak.ui.dagger.RootComponent
 
 open class BaseViewModel: Observable, ViewModel() {
