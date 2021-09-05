@@ -15,9 +15,9 @@ apply plugin: 'kotlin-kapt'
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    api 'io.reactivex.rxjava2:rxjava:2.2.19'
+    api 'io.reactivex.rxjava2:rxjava:2.2.21'
     api 'io.reactivex.rxjava2:rxkotlin:2.4.0'
-    api 'com.google.dagger:dagger:2.34'
-    kapt 'com.google.dagger:dagger-compiler:2.34'
+    api 'com.google.dagger:dagger:2.38.1'
+    kapt 'com.google.dagger:dagger-compiler:2.38.1'
 }
 

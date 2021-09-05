@@ -17,5 +17,5 @@ dependencies {
 
     implementation project(':domain')
     implementation group: 'com.tumblr', name: 'jumblr', version: '0.0.13'
-    kapt 'com.google.dagger:dagger-compiler:2.34'
+    kapt 'com.google.dagger:dagger-compiler:2.38.1'
 }
