@@ -10,7 +10,7 @@ import retrofit2.http.Query
 interface PostsForBlog {
 
     //api.tumblr.com/v2/blog/{blog-identifier}/posts[/type]?api_key={key}&[optional-params=]
-    @GET("blog/{blog-identifier}/posts")
+    @GET("blog/{blog-identifier}/posts?reblog_info=true")
     fun getPostsForBlog(
         @Path("blog-identifier") blogId: String,
         @Query("api_key") apiKey: String,

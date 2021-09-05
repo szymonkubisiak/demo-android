@@ -21,29 +21,10 @@ class PostsForBlogRepoImpl @Inject constructor(
                 resp.response!!.posts!!.mapNotNull { post ->
                     //Post(Post.ID.create(it.id!!, id), "dummy", null)
 
-                    mapper_post(post, Post.ID.create(post.id!!, id))
+                    PostRepoImpl.mapper_post(post, Post.ID.create(post.id!!, id))
 
                 }
             }
             .toObservable()
-    }
-
-    private fun mapper_post(
-        post: PojoPost,
-        id: Post.ID
-    ): Post? {
-        val postModel = when (post) {
-            is PojoPost.Photo -> Post(
-                id,
-                post.caption?:"NO CAPTION",
-                post.rebloggedFromName,
-                post.photos?.firstOrNull()?.sizes?.firstOrNull()?.url
-            )
-            is PojoPost.Text -> Post(id, post.title + " " + post.body, post.rebloggedFromName)
-            is PojoPost.Answer -> Post(id, post.question + " " + post.answer, post.rebloggedFromName)
-            is PojoPost.Chat -> Post(id, post.title + " " + post.body, post.rebloggedFromName)
-            else -> null
-        }
-        return postModel
     }
 }
