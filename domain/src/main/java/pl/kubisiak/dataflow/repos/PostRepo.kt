@@ -1,6 +1,6 @@
 package pl.kubisiak.dataflow.repos
 
-import io.reactivex.Observable
+import io.reactivex.rxjava3.core.Observable
 import pl.kubisiak.dataflow.models.Post
 
 interface PostRepo {

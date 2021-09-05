@@ -38,7 +38,7 @@ dependencies {
     implementation project(':data-jumblr')
     implementation project(':ui')
 
-    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
     kapt 'com.google.dagger:dagger-compiler:2.38.1'
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
     testImplementation 'junit:junit:4.13.2'

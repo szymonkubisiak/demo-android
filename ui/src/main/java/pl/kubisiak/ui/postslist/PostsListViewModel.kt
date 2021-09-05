@@ -4,7 +4,7 @@ import androidx.databinding.Bindable
 import androidx.databinding.ObservableArrayList
 import androidx.databinding.ObservableList
 import androidx.databinding.library.baseAdapters.BR
-import io.reactivex.disposables.Disposable
+import io.reactivex.rxjava3.disposables.Disposable
 import pl.kubisiak.dataflow.Pager
 import pl.kubisiak.dataflow.models.Blog
 import pl.kubisiak.ui.dagger.RootComponent
