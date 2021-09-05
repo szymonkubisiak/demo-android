@@ -1,26 +1,20 @@
 package pl.kubisiak.ui.postdetail
 
 import android.os.Bundle
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import pl.kubisiak.ui.R
 import pl.kubisiak.dataflow.models.Post
 import pl.kubisiak.ui.BaseFragment
+import pl.kubisiak.ui.BaseViewModel
 
 private const val POST_ID = "postidparam"
 
 class PostDetailsFragment : BaseFragment() {
-    private class Factory(val id: Post.ID) : ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return modelClass.cast(PostDetailsViewModel(id))!!
-        }
-    }
 
-    override fun createViewModel() =
-        ViewModelProviders
-            .of(this, Factory(arguments?.getSerializable(POST_ID) as Post.ID))
-            .get(PostDetailsViewModel::class.java)
+    override fun createViewModel(): BaseViewModel {
+        val id = arguments?.getSerializable(POST_ID) as Post.ID
+        val retval = getVmTroughProvider(id, ::PostDetailsViewModel)
+        return retval
+    }
 
     override fun getLayoutRes() =
         R.layout.postdetails_fragment
