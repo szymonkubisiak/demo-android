@@ -76,7 +76,7 @@ internal class PostForBlogPager(
     }
 }
 
-abstract class BasePager<T> : Pager<T> {
+abstract class BasePager<T : Any> : Pager<T> {
 
     protected val observable: PublishSubject<T> = PublishSubject.create()
 
