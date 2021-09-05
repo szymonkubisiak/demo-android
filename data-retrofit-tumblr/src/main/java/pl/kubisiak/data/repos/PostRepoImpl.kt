@@ -1,6 +1,6 @@
 package pl.kubisiak.data.repos
 
-import io.reactivex.Observable
+import io.reactivex.rxjava3.core.Observable
 import pl.kubisiak.dataflow.models.Post
 import pl.kubisiak.dataflow.repos.PostRepo
 import javax.inject.Inject

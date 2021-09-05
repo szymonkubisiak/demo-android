@@ -1,6 +1,6 @@
 package pl.kubisiak.data.repos
 
-import io.reactivex.Observable
+import io.reactivex.rxjava3.core.Observable
 import pl.kubisiak.data.dto.*
 
 import pl.kubisiak.data.tumblr.TumblrClientKey
