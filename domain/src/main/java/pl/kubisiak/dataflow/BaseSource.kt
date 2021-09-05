@@ -4,7 +4,7 @@ import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 
-abstract class BaseSource<T> : Source<T> {
+abstract class BaseSource<T : Any> : Source<T> {
 
     protected val observable: BehaviorSubject<T> = BehaviorSubject.create()
 
