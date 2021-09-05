@@ -6,10 +6,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ObservableList
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ViewTreeLifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
+import pl.kubisiak.ui.BaseViewModel
 import pl.kubisiak.ui.R
 import pl.kubisiak.ui.items.*
-import pl.kubisiak.ui.BaseViewModel
 
 open class ViewModelAdapter<VM : BaseViewModel>(protected open val items: List<VM>) : RecyclerView.Adapter<ViewModelViewHolder>() {
 
@@ -19,11 +20,7 @@ open class ViewModelAdapter<VM : BaseViewModel>(protected open val items: List<V
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewModelViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = DataBindingUtil.inflate<ViewDataBinding>(inflater, viewType, parent, false)
-        //TODO: set appropriate lifecycle owner
-        val lifecycleOwner = parent.context as? LifecycleOwner
-        lifecycleOwner?.also {
-            binding.lifecycleOwner = it
-        }
+        binding.lifecycleOwner = ViewTreeLifecycleOwner.get(parent)?: parent.context as LifecycleOwner
         return ViewModelViewHolder(binding)
     }
 

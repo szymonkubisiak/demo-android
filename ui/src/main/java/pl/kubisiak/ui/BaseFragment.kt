@@ -30,7 +30,7 @@ abstract class BaseFragment : Fragment() {
         if (viewModel == null)
             viewModel = createViewModel()
         val binding: ViewDataBinding = DataBindingUtil.inflate(inflater, getLayoutRes(), container, false)
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = this.viewLifecycleOwner
         binding.setVariable(BR.vm, viewModel)
         binding.executePendingBindings()
         return binding.root
