@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import pl.kubisiak.ui.BaseViewModel
 import pl.kubisiak.ui.R
 import pl.kubisiak.ui.items.*
+import java.lang.ref.WeakReference
 
 open class ViewModelAdapter<VM : BaseViewModel>(protected open val items: List<VM>) : RecyclerView.Adapter<ViewModelViewHolder>() {
 
@@ -69,28 +70,34 @@ class ViewModelObserverAdapter<VM : BaseViewModel>(override val items: Observabl
  * ListChangedEventTranslator
  * This class implements ObservableList.OnListChangedCallback and translates its "content changed" events to corresponding RecyclerView events.
  */
-//TODO: Is there a possibility that the translator+adapter could be left referenced by the ObservableList even after RecyclerView is no more? Research if we need weak observing here to contain a leak.
-internal class ListChangedEventTranslator<T>(private val adapter: RecyclerView.Adapter<*>) : ObservableList.OnListChangedCallback<ObservableList<T>>() {
+//TODO: Needs more research if the weak observing breaks anything.
+internal class ListChangedEventTranslator<T>(strongAdapter: RecyclerView.Adapter<*>) : ObservableList.OnListChangedCallback<ObservableList<T>>() {
+    private val weakAdapter = WeakReference(strongAdapter)
+    private val adapter : RecyclerView.Adapter<*>?
+    get() {
+        val retval = weakAdapter.get()
+        return retval
+    }
     override fun onChanged(sender: ObservableList<T>?) {
-        adapter.notifyDataSetChanged()
+        adapter?.notifyDataSetChanged()
     }
 
     override fun onItemRangeChanged(sender: ObservableList<T>?, positionStart: Int, itemCount: Int) {
-        adapter.notifyItemRangeChanged(positionStart, itemCount)
+        adapter?.notifyItemRangeChanged(positionStart, itemCount)
     }
 
     override fun onItemRangeInserted(sender: ObservableList<T>?, positionStart: Int, itemCount: Int) {
-        adapter.notifyItemRangeInserted(positionStart, itemCount)
+        adapter?.notifyItemRangeInserted(positionStart, itemCount)
     }
 
     override fun onItemRangeMoved(sender: ObservableList<T>?, fromPosition: Int, toPosition: Int, itemCount: Int) {
         if (itemCount == 1)
-            adapter.notifyItemMoved(fromPosition, toPosition)
+            adapter?.notifyItemMoved(fromPosition, toPosition)
         else
-            adapter.notifyDataSetChanged()
+            adapter?.notifyDataSetChanged()
     }
 
     override fun onItemRangeRemoved(sender: ObservableList<T>?, positionStart: Int, itemCount: Int) {
-        adapter.notifyItemRangeRemoved(positionStart, itemCount)
+        adapter?.notifyItemRangeRemoved(positionStart, itemCount)
     }
 }
