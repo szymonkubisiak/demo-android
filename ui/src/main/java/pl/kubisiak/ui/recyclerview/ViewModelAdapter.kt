@@ -44,6 +44,9 @@ open class ViewModelAdapter<VM : BaseViewModel>(protected open val items: List<V
             else -> -1
         }
     }
+    init {
+        stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
+    }
 }
 
 class ViewModelObserverAdapter<VM : BaseViewModel>(override val items: ObservableList<VM>) : ViewModelAdapter<VM>(items) {
