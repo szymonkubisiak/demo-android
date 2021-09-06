@@ -4,48 +4,17 @@ import androidx.databinding.Bindable
 import androidx.databinding.Observable
 import androidx.databinding.Observable.OnPropertyChangedCallback
 import androidx.databinding.PropertyChangeRegistry
-import androidx.databinding.library.baseAdapters.BR
-import androidx.lifecycle.ViewModel
-import io.reactivex.Completable
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.internal.disposables.DisposableContainer
 import pl.kubisiak.ui.dagger.RootComponent
+import java.util.concurrent.atomic.AtomicLong
 
-open class BaseViewModel protected constructor(): Observable, ViewModel() {
+/**
+ * Base for sub-viewmodels - like viewmodels, but their lifetime is not managed by the Android framework.
+ * This means no more onCleared, so the disposer must come in as a ctor param.
+ */
+open class BaseSubViewModel protected constructor(val disposer: DisposableContainer) : Observable {
     val navigator: Navigator = RootComponent.instance.navigator()
-
-    private val _disposer = CompositeDisposable()
-
-    val disposer:DisposableContainer = _disposer
-
-    override fun onCleared() {
-        super.onCleared()
-        _disposer.dispose()
-    }
-
-    protected var _isLoading: Boolean = false
-    var isLoading: Boolean
-        @Bindable get() = _isLoading
-        @Bindable set(value) {
-            _isLoading = value
-            notifyPropertyChanged(BR.loading)
-        }
-
-    protected fun subscribeLoader(p: Completable?) {
-        p?.also {
-            isLoading = true
-            disposer.add(
-                it.subscribe(
-                    { isLoading = false },
-                    { ex ->
-                        isLoading = false
-                        //TODO: check the exception destination, displaying message is only one of them
-                        navigator.showMessage(ex.message ?: "unknown", "Error")
-                    })
-            )
-        }
-    }
 
     protected operator fun DisposableContainer.plusAssign(subscription: Disposable) {
         if (!this.add(subscription))
@@ -90,4 +59,8 @@ open class BaseViewModel protected constructor(): Observable, ViewModel() {
         mCallbacks!!.notifyCallbacks(this, fieldId, null)
     }
     //endregion
+
+    companion object {
+        val uniqueIdGenerator = AtomicLong(0)
+    }
 }

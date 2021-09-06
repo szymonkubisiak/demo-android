@@ -4,7 +4,9 @@ import androidx.databinding.Bindable
 import androidx.databinding.ObservableArrayList
 import androidx.databinding.ObservableList
 import androidx.databinding.library.baseAdapters.BR
+import io.reactivex.internal.disposables.DisposableContainer
 import pl.kubisiak.dataflow.models.Blog
+import pl.kubisiak.ui.BaseSubViewModel
 import pl.kubisiak.ui.BaseViewModel
 
 class MainViewModel : BaseViewModel() {
@@ -25,16 +27,16 @@ class MainViewModel : BaseViewModel() {
         navigator.goToPostsList(Blog.ID.create(title + ".tumblr.com"))
     }
 
-    private var _list: ObservableList<BaseViewModel>? = ObservableArrayList<BaseViewModel>()
-    var list: ObservableList<BaseViewModel>?
+    private var _list: ObservableList<BaseSubViewModel>? = ObservableArrayList<BaseSubViewModel>()
+    var list: ObservableList<BaseSubViewModel>?
         @Bindable get() = _list
         @Bindable set(value) {
             _list = value
             notifyPropertyChanged(BR.list)
         }
 
-    private var _currentItem: BaseViewModel? = null
-    var currentItem: BaseViewModel?
+    private var _currentItem: BaseSubViewModel? = null
+    var currentItem: BaseSubViewModel?
         @Bindable get() = _currentItem
         @Bindable set(value) {
             _currentItem = value
@@ -49,15 +51,16 @@ class MainViewModel : BaseViewModel() {
     init {
         list?.addAll(
             listOf(
-                SpinnerItem("nasa"),
-                SpinnerItem("dankmemeuniversity"),
-                //SpinnerItem("artsdrug"),
-                SpinnerItem("supermodelcats")
+                SpinnerItem(disposer, "avtavr"),
+                SpinnerItem(disposer, "nasa"),
+                SpinnerItem(disposer, "dankmemeuniversity"),
+                //SpinnerItem("artsdrug", disposer),
+                SpinnerItem(disposer, "supermodelcats")
             )
         )
     }
 
-    class SpinnerItem(val _handle: String) : BaseViewModel() {
+    class SpinnerItem(disposer: DisposableContainer, val _handle: String) : BaseSubViewModel(disposer) {
         val handle: String?
             @Bindable get() {
                 return _handle

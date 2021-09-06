@@ -4,11 +4,12 @@ import android.text.Html
 import android.text.Spanned
 import androidx.databinding.Bindable
 import androidx.databinding.library.baseAdapters.BR
+import io.reactivex.internal.disposables.DisposableContainer
 import pl.kubisiak.dataflow.models.Post
 import pl.kubisiak.ui.dagger.RootComponent
-import pl.kubisiak.ui.BaseViewModel
+import pl.kubisiak.ui.BaseSubViewModel
 
-class PostItemViewModel(val id: Post.ID) : BaseViewModel() {
+class PostItemViewModel(disposer: DisposableContainer, val id: Post.ID) : BaseSubViewModel(disposer) {
 
     private var _title: String? = null
     var title: String?

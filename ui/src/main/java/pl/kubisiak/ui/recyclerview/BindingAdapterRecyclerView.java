@@ -9,12 +9,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
-import pl.kubisiak.ui.BaseViewModel;
+import pl.kubisiak.ui.BaseSubViewModel;
 
 public class BindingAdapterRecyclerView {
 
     @BindingAdapter({"items"})
-    public static <VM extends BaseViewModel> void bindItemsThroughViewModelAdapter(@NonNull RecyclerView recyclerView, @Nullable List<VM> items) {
+    public static <VM extends BaseSubViewModel> void bindItemsThroughViewModelAdapter(@NonNull RecyclerView recyclerView, @Nullable List<VM> items) {
         if (items != null) {
             recyclerView.setAdapter(new ViewModelAdapter<>(items));
         } else {
@@ -23,7 +23,7 @@ public class BindingAdapterRecyclerView {
     }
 
     @BindingAdapter({"items"})
-    public static <VM extends BaseViewModel> void bindItemsThroughViewModelAdapter(@NonNull RecyclerView recyclerView, @Nullable ObservableList<VM> items) {
+    public static <VM extends BaseSubViewModel> void bindItemsThroughViewModelAdapter(@NonNull RecyclerView recyclerView, @Nullable ObservableList<VM> items) {
         ViewModelObserverAdapter<?> oldAdapter = (recyclerView.getAdapter() instanceof ViewModelObserverAdapter) ? (ViewModelObserverAdapter<?>) recyclerView.getAdapter() : null;
         if (oldAdapter != null && oldAdapter.isListSame(items)) {
             //for some reason, binding engine calls change on instance of the list even though only the contents change, not the instance

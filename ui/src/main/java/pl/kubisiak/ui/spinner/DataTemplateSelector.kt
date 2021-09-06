@@ -1,9 +1,9 @@
 package pl.kubisiak.ui.spinner
 
 import androidx.annotation.LayoutRes
-import pl.kubisiak.ui.BaseViewModel
+import pl.kubisiak.ui.BaseSubViewModel
 
 interface DataTemplateSelector {
     @LayoutRes
-    fun provideLayoutId(viewModel: BaseViewModel): Int
+    fun provideLayoutId(viewModel: BaseSubViewModel): Int
 }

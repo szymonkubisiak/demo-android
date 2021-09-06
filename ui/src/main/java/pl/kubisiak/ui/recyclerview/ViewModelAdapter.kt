@@ -9,12 +9,12 @@ import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewTreeLifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
-import pl.kubisiak.ui.BaseViewModel
+import pl.kubisiak.ui.BaseSubViewModel
 import pl.kubisiak.ui.R
 import pl.kubisiak.ui.items.*
 import java.lang.ref.WeakReference
 
-open class ViewModelAdapter<VM : BaseViewModel>(protected open val items: List<VM>) : RecyclerView.Adapter<ViewModelViewHolder>() {
+open class ViewModelAdapter<VM : BaseSubViewModel>(protected open val items: List<VM>) : RecyclerView.Adapter<ViewModelViewHolder>() {
 
     override fun getItemCount(): Int =
         items.size
@@ -49,10 +49,10 @@ open class ViewModelAdapter<VM : BaseViewModel>(protected open val items: List<V
     }
 }
 
-class ViewModelObserverAdapter<VM : BaseViewModel>(override val items: ObservableList<VM>) : ViewModelAdapter<VM>(items) {
+class ViewModelObserverAdapter<VM : BaseSubViewModel>(override val items: ObservableList<VM>) : ViewModelAdapter<VM>(items) {
     private val eventTranslator = ListChangedEventTranslator<VM>(this)
 
-    fun <VM : BaseViewModel> isListSame(newItems: ObservableList<VM>?): Boolean {
+    fun <VM : BaseSubViewModel> isListSame(newItems: ObservableList<VM>?): Boolean {
         return newItems === items
     }
 

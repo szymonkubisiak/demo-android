@@ -13,12 +13,12 @@ import androidx.databinding.InverseBindingListener;
 
 import java.util.List;
 
-import pl.kubisiak.ui.BaseViewModel;
+import pl.kubisiak.ui.BaseSubViewModel;
 
 public class BindingAdapterSpinner {
 
     @BindingAdapter({"items", "dataTemplateSelector"})
-    public static void bindItemsThroughViewModelAdapter(@NonNull Spinner view, @Nullable List<BaseViewModel> items, @Nullable DataTemplateSelector selector) {
+    public static void bindItemsThroughViewModelAdapter(@NonNull Spinner view, @Nullable List<BaseSubViewModel> items, @Nullable DataTemplateSelector selector) {
         if (items != null) {
             view.setAdapter(new SpinnerAdapter(items, selector));
         } else {
@@ -27,7 +27,7 @@ public class BindingAdapterSpinner {
     }
 
     @BindingAdapter({"currentItem"})
-    public static void bindCurrentItem(@NonNull Spinner view, BaseViewModel oldValue, BaseViewModel newValue) {
+    public static void bindCurrentItem(@NonNull Spinner view, BaseSubViewModel oldValue, BaseSubViewModel newValue) {
         if (newValue != null) {
             SpinnerAdapter adapter = ((SpinnerAdapter) view.getAdapter());
             if(adapter == null) {

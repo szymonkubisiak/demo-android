@@ -8,6 +8,7 @@ import io.reactivex.disposables.Disposable
 import pl.kubisiak.dataflow.Pager
 import pl.kubisiak.dataflow.models.Blog
 import pl.kubisiak.ui.dagger.RootComponent
+import pl.kubisiak.ui.BaseSubViewModel
 import pl.kubisiak.ui.BaseViewModel
 import pl.kubisiak.ui.items.LoadingItemViewModel
 import pl.kubisiak.ui.items.PostItemViewModel
@@ -15,8 +16,8 @@ import pl.kubisiak.ui.items.PostItemViewModel
 
 class PostsListViewModel(val blogID: Blog.ID) : BaseViewModel() {
 
-    private var _list: ObservableList<BaseViewModel>? = ObservableArrayList<BaseViewModel>()
-    var list: ObservableList<BaseViewModel>?
+    private var _list: ObservableList<BaseSubViewModel>? = ObservableArrayList<BaseSubViewModel>()
+    var list: ObservableList<BaseSubViewModel>?
         @Bindable get() = _list
         @Bindable set(value) {
             _list = value
@@ -31,22 +32,21 @@ class PostsListViewModel(val blogID: Blog.ID) : BaseViewModel() {
 
     init {
         disposer.add(postsForBlog.observable().subscribe { pager ->
-            val retval = ObservableArrayList<BaseViewModel>()
+            val retval = ObservableArrayList<BaseSubViewModel>()
             list = retval
-            disposer.add(subscribeToPager(pager, retval) { PostItemViewModel(it) })
+            disposer.add(subscribeToPager(pager, retval) { PostItemViewModel(disposer, it) })
             subscribeLoader(pager.requestNextPage())//only the first page gets big loader
         })
         subscribeLoader(postsForBlog.ensure())
     }
 
-    companion object {
-        fun <I> subscribeToPager(pager: Pager<List<I>>, output: ObservableList<BaseViewModel>, transform: (I) -> BaseViewModel): Disposable {
-            return pager.nextPage().subscribe {
-                output.apply {
-                    (lastOrNull() as? LoadingItemViewModel)?.also { remove(it) }
-                    addAll(it.map(transform))
-                    add(LoadingItemViewModel(pager))
-                }
+
+    fun <I> subscribeToPager(pager: Pager<List<I>>, output: ObservableList<BaseSubViewModel>, transform: (I) -> BaseSubViewModel): Disposable {
+        return pager.nextPage().subscribe {
+            output.apply {
+                (lastOrNull() as? LoadingItemViewModel)?.also { remove(it) }
+                addAll(it.map(transform))
+                add(LoadingItemViewModel(disposer, pager))
             }
         }
     }

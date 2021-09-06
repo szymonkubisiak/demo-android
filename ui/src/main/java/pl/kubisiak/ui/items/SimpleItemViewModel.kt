@@ -1,6 +1,8 @@
 package pl.kubisiak.ui.items
 
 import androidx.databinding.Bindable
-import pl.kubisiak.ui.BaseViewModel
+import io.reactivex.internal.disposables.DisposableContainer
 
-class SimpleItemViewModel(@Bindable val text : String) : BaseViewModel()
+import pl.kubisiak.ui.BaseSubViewModel
+
+class SimpleItemViewModel constructor(disposer: DisposableContainer, @Bindable val text : String) : BaseSubViewModel(disposer)

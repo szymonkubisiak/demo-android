@@ -10,11 +10,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.databinding.library.baseAdapters.BR
 import androidx.lifecycle.LifecycleOwner
-import pl.kubisiak.ui.BaseViewModel
+import pl.kubisiak.ui.BaseSubViewModel
 
 
 class SpinnerAdapter(
-    private val items: List<BaseViewModel>,
+    private val items: List<BaseSubViewModel>,
     private val selector: DataTemplateSelector,
 ) : BaseAdapter() {
 
@@ -53,7 +53,7 @@ class SpinnerAdapter(
         return getView(position, convertView, parent)
     }
 
-    fun getPosition(viewModel: BaseViewModel?): Int {
+    fun getPosition(viewModel: BaseSubViewModel?): Int {
         return items.indexOf(viewModel)
     }
 }
