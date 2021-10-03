@@ -5,6 +5,7 @@ import pl.kubisiak.ui.R
 import pl.kubisiak.dataflow.models.Post
 import pl.kubisiak.ui.BaseFragment
 import pl.kubisiak.ui.BaseViewModel
+import pl.kubisiak.ui.dagger.RootComponent
 
 private const val POST_ID = "postidparam"
 
@@ -12,7 +13,7 @@ class PostDetailsFragment : BaseFragment() {
 
     override fun createViewModel(): BaseViewModel {
         val id = arguments?.getSerializable(POST_ID) as Post.ID
-        val retval = getVmTroughProvider(id, ::PostDetailsViewModel)
+        val retval = getVmTroughProvider(id) { RootComponent.instance.postDetailsViewModel().get(it) }
         return retval
     }
 

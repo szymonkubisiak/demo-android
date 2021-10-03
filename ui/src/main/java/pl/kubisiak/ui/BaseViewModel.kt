@@ -10,10 +10,8 @@ import io.reactivex.Completable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.internal.disposables.DisposableContainer
-import pl.kubisiak.ui.dagger.RootComponent
 
-open class BaseViewModel protected constructor(): Observable, ViewModel() {
-    val navigator: Navigator = RootComponent.instance.navigator()
+abstract class BaseViewModel protected constructor(protected val navigator: Navigator): Observable, ViewModel() {
 
     private val _disposer = CompositeDisposable()
 

@@ -8,6 +8,9 @@ import pl.kubisiak.dataflow.models.*
 import pl.kubisiak.dataflow.sources.FavouritePostsSource
 import pl.kubisiak.ui.Navigator
 import pl.kubisiak.ui.NavigatorImpl
+import pl.kubisiak.ui.main.MainViewModel
+import pl.kubisiak.ui.postdetail.PostDetailsViewModel
+import pl.kubisiak.ui.postslist.PostsListViewModel
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -19,6 +22,10 @@ interface RootComponent {
     fun favourites(): FavouritePostsSource
 
     fun navigator(): Navigator
+
+    fun mainViewModel(): MainViewModel
+    fun postDetailsViewModel(): PostDetailsViewModel.Factory
+    fun postsListViewModel(): PostsListViewModel.Factory
 
     companion object {
         lateinit var instance: RootComponent

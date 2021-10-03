@@ -5,13 +5,25 @@ import android.text.Html
 import android.text.Spanned
 import androidx.databinding.Bindable
 import androidx.databinding.library.baseAdapters.BR
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import pl.kubisiak.dataflow.models.Blog
 import pl.kubisiak.dataflow.models.Post
 import pl.kubisiak.ui.dagger.RootComponent
 import pl.kubisiak.ui.BaseViewModel
+import pl.kubisiak.ui.Navigator
 
 
-class PostDetailsViewModel(val id: Post.ID) : BaseViewModel() {
+class PostDetailsViewModel @AssistedInject constructor(
+    @Assisted val id: Post.ID,
+    navigator: Navigator,
+) : BaseViewModel(navigator) {
+
+    @AssistedFactory
+    interface Factory {
+        fun get(id: Post.ID): PostDetailsViewModel
+    }
 
     private var _title: String? = null
     var title: String?

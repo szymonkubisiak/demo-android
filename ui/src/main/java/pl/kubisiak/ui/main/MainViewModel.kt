@@ -8,8 +8,10 @@ import io.reactivex.internal.disposables.DisposableContainer
 import pl.kubisiak.dataflow.models.Blog
 import pl.kubisiak.ui.BaseSubViewModel
 import pl.kubisiak.ui.BaseViewModel
+import pl.kubisiak.ui.Navigator
+import javax.inject.Inject
 
-class MainViewModel : BaseViewModel() {
+class MainViewModel @Inject constructor(navigator: Navigator) : BaseViewModel(navigator) {
 
     private var _title: String? = "seejohnrun"
     var title: String?

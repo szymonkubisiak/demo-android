@@ -6,10 +6,11 @@ import androidx.databinding.ObservableList
 import androidx.databinding.library.baseAdapters.BR
 import pl.kubisiak.ui.BaseSubViewModel
 import pl.kubisiak.ui.BaseViewModel
+import pl.kubisiak.ui.Navigator
 import pl.kubisiak.ui.items.ImageItemViewModel
 import pl.kubisiak.ui.items.SimpleItemViewModel
 
-class ListTestViewModel : BaseViewModel() {
+class ListTestViewModel(navigator: Navigator) : BaseViewModel(navigator) {
 
     private var _list: ObservableList<BaseSubViewModel>? = ObservableArrayList<BaseSubViewModel>()
         .apply {
