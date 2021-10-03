@@ -1,3 +1,4 @@
 <resources>
+    <string name="app_name">demo</string>
     <string name="leak_canary_display_activity_label">demo canary</string>
 </resources>
