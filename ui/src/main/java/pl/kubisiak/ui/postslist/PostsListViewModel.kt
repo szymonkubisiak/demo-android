@@ -25,7 +25,7 @@ class PostsListViewModel @AssistedInject constructor(
     @Assisted val blogID: Blog.ID,
     navigator: Navigator,
     //Why it doesn't work?!?:
-    //depot: Depot<Blog.ID, Source<Pager<List<Post.ID>>>>,
+    depot: Depot<Blog.ID, Source<Pager<List<Post.ID>>>>,
 ) : BaseViewModel(navigator) {
 
     @AssistedFactory
@@ -48,7 +48,7 @@ class PostsListViewModel @AssistedInject constructor(
     private val postsForBlog: Source<Pager<List<Post.ID>>>
 
     init {
-        val depot = RootComponent.instance.postsFroBlogPaginatedDepot()
+        //val depot = RootComponent.instance.postsFroBlogPaginatedDepot()
         postsForBlog = depot.get(blogID)
         disposer.add(postsForBlog.observable().subscribe { pager ->
             val retval = ObservableArrayList<BaseSubViewModel>()
