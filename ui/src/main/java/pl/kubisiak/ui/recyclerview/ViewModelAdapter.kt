@@ -7,7 +7,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ObservableList
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ViewTreeLifecycleOwner
+import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import pl.kubisiak.ui.BaseSubViewModel
 import pl.kubisiak.ui.R
@@ -22,7 +22,7 @@ open class ViewModelAdapter<VM : BaseSubViewModel>(protected open val items: Lis
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewModelViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = DataBindingUtil.inflate<ViewDataBinding>(inflater, viewType, parent, false)
-        binding.lifecycleOwner = ViewTreeLifecycleOwner.get(parent) ?: parent.context as LifecycleOwner
+        binding.lifecycleOwner = parent.findViewTreeLifecycleOwner() ?: parent.context as LifecycleOwner
         return ViewModelViewHolder(binding)
     }
 
