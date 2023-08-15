@@ -5,6 +5,9 @@ plugins {
 }
 
 allprojects {
+    project.ext {
+        java_version = JavaVersion.VERSION_11
+    }
 }
 
 task clean(type: Delete) {

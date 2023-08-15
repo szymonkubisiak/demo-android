@@ -20,11 +20,11 @@ android {
         enabled true
     }
     compileOptions {
-        sourceCompatibility = 11
-        targetCompatibility = 11
+        sourceCompatibility = project.java_version
+        targetCompatibility = project.java_version
     }
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
+        jvmTarget = project.java_version.toString()
     }
     namespace 'pl.kubisiak.ui'
 

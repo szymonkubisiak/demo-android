@@ -4,10 +4,10 @@
 
 apply plugin: 'kotlin'
 compileKotlin {
-    kotlinOptions.jvmTarget = "11"
+    kotlinOptions.jvmTarget = project.java_version
 }
 compileTestKotlin {
-    kotlinOptions.jvmTarget = "11"
+    kotlinOptions.jvmTarget = project.java_version
 }
 
 apply plugin: 'kotlin-kapt'
